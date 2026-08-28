@@ -4,7 +4,6 @@
 class RpiCamVidWrapper {
 
     public:
-        RpiCamVidWrapper();
         ~RpiCamVidWrapper();
 
         std::optional<pid_t> start();

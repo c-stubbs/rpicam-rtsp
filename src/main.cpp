@@ -2,68 +2,16 @@
 #include <gst/rtsp-server/rtsp-server.h>
 #include <glib.h>
 #include <iostream>
-#include <unistd.h>
-#include <sys/types.h>
-#include <string>
-#include <vector>
-
-pid_t startCamera(
-    int width,
-    int height,
-    int fps,
-    int bitrate)
-{
-    pid_t pid = fork();
-
-    if (pid < 0) {
-        perror("fork");
-        return -1;
-    }
-
-    if (pid == 0) {
-
-        std::vector<std::string> args = {
-            "rpicam-vid",
-            "-t", "0",
-            "-v", "0",
-            "--width", std::to_string(width),
-            "--height", std::to_string(height),
-            "--framerate", std::to_string(fps),
-            "--bitrate", std::to_string(bitrate),
-            "--inline",
-            "-o", "udp://127.0.0.1:5000"
-        };
-
-        std::vector<char*> argv;
-
-        for (auto& arg : args) {
-            argv.push_back(arg.data());
-        }
-
-        argv.push_back(nullptr);
-
-        execvp(argv[0], argv.data());
-
-        perror("execvp");
-        _exit(1);
-    }
-
-    return pid;
-}
+#include "rpicam_vid_wrapper.h"
 
 int main(int argc, char *argv[])
 {
-
-    pid_t cameraPid = startCamera(
-        1920,       // width
-        1080,       // height
-        15,         // FPS
-        1000000     // 4 Mbps
-    );
-
-    if (cameraPid < 0) {
+    RpiCamVidWrapper rpicam;
+    if (!rpicam.start())
+    {
         return 1;
     }
+
     gst_init(&argc, &argv);
 
     GMainLoop *loop = g_main_loop_new(nullptr, FALSE);
