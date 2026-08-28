@@ -25,6 +25,7 @@ pid_t startCamera(
         std::vector<std::string> args = {
             "rpicam-vid",
             "-t", "0",
+            "-v", "0",
             "--width", std::to_string(width),
             "--height", std::to_string(height),
             "--framerate", std::to_string(fps),
