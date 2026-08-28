@@ -23,6 +23,7 @@ pkg_check_modules(GST REQUIRED
     gstreamer-rtsp-server-1.0)
 
 add_subdirectory(src/rpicam_vid_wrapper)
+add_subdirectory(src/rtsp_server)
 
 # Add main executable
 add_executable(${PROJECT_NAME} 
@@ -32,13 +33,9 @@ target_compile_definitions(${PROJECT_NAME}
     PRIVATE
     CONFIG_DIR="${CONFIG_DIR}")
 
-target_include_directories(${PROJECT_NAME}
-    PRIVATE
-    ${GST_INCLUDE_DIRS})
-
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-    ${GST_LIBRARIES}
+    rtsp_server
     rpicam_vid_wrapper)
 
 # Install bins
