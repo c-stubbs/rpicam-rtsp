@@ -1,0 +1,51 @@
+cmake_minimum_required(VERSION 3.28)
+project(ov5647-rtsp)
+
+include(GNUInstallDirs)
+
+set(CONFIG_DIR
+    "${CMAKE_INSTALL_PREFIX}/config/")
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+set(CMAKE_BUILD_TYPE Debug)
+
+set(CMAKE_C_COMPILER=clang)
+set(CMAKE_CXX_COMPILER=clang++)
+
+# find requried packages
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GST REQUIRED 
+    gstreamer-1.0
+    gstreamer-rtsp-server-1.0)
+
+# Add main executable
+add_executable(${PROJECT_NAME} 
+    src/main.cpp)
+
+target_compile_definitions(${PROJECT_NAME} 
+    PRIVATE
+    CONFIG_DIR="${CONFIG_DIR}")
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+    ${GST_INCLUDE_DIRS})
+
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+    ${GST_LIBRARIES})
+
+# Install bins
+install(
+    TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+# Install configs
+install(
+    DIRECTORY config/
+    DESTINATION config
+)
