@@ -20,6 +20,7 @@ set(CMAKE_CXX_COMPILER=clang++)
 find_package(PkgConfig REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(fmt REQUIRED)
+find_package(tomlplusplus REQUIRED)
 pkg_check_modules(GST REQUIRED 
     gstreamer-1.0
     gstreamer-rtsp-server-1.0)
@@ -50,7 +51,8 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
     rtsp_server
     rpicam_vid_wrapper
-    logger)
+    logger
+    tomlplusplus)
 
 # Install bins
 install(

@@ -1,4 +1,4 @@
-# Add main executable
+# rpicam-vid wrapper
 add_library(rpicam_vid_wrapper)
 
 target_sources(rpicam_vid_wrapper
@@ -11,4 +11,22 @@ target_include_directories(rpicam_vid_wrapper
 
 target_link_libraries(rpicam_vid_wrapper
     PRIVATE
-    logger)
+    logger
+    rpicam_vid_wrapper_config)
+
+# rpicam-vid wrapper config
+add_library(rpicam_vid_wrapper_config)
+
+target_sources(rpicam_vid_wrapper_config
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/rpicam_vid_wrapper_config.cpp)
+
+target_include_directories(rpicam_vid_wrapper_config
+    PUBLIC
+    ${CMAKE_SOURCE_DIR}/include/rpicam_vid_wrapper)
+
+target_link_libraries(rpicam_vid_wrapper_config
+    PRIVATE
+    logger
+    PUBLIC
+    tomlplusplus)
