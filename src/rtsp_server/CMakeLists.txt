@@ -12,4 +12,6 @@ target_include_directories(rtsp_server
 
 target_link_libraries(rtsp_server
     PUBLIC
-    ${GST_LIBRARIES})
+    ${GST_LIBRARIES}
+    PRIVATE
+    logger)

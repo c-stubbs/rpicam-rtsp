@@ -8,3 +8,7 @@ target_sources(rpicam_vid_wrapper
 target_include_directories(rpicam_vid_wrapper
     PUBLIC
     ${CMAKE_SOURCE_DIR}/include/rpicam_vid_wrapper)
+
+target_link_libraries(rpicam_vid_wrapper
+    PRIVATE
+    logger)

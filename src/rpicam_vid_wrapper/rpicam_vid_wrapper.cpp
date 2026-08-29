@@ -5,6 +5,11 @@
 #include <vector>
 #include <string>
 
+RpiCamVidWrapper::RpiCamVidWrapper() : 
+    log_("rpicam_vid_wrapper","info")
+{
+}
+
 RpiCamVidWrapper::~RpiCamVidWrapper()
 {
     stop();
@@ -23,7 +28,7 @@ std::optional<pid_t> RpiCamVidWrapper::start()
     // Fork failed
     if (pid < 0)
     {
-        perror("fork");
+        log_.error("fork: {}", std::strerror(errno));
         return std::nullopt;
     }
 
@@ -53,9 +58,12 @@ std::optional<pid_t> RpiCamVidWrapper::start()
         execvp(argv[0], argv.data());
 
         // Only reached if execvp process fails
-        perror("execvp");
+        log_.error("execvp: {}", std::strerror(errno));
         _exit(1);
     }
+
+    log_.info("started");
+    log_.debug("child pid: {}", pid);
 
     // Parent branch
     pid_ = std::optional<pid_t>(pid);
@@ -90,7 +98,7 @@ void RpiCamVidWrapper::stop()
             pid_.reset();
             return;
         }
-        perror("waitpid");
+        log_.error("waitpd: {}", std::strerror(errno));
         pid_.reset();
         return;
     }
@@ -100,7 +108,7 @@ void RpiCamVidWrapper::stop()
     {
         if (errno != ESRCH)
         {
-            perror("kill");
+            log_.error("kill: {}", std::strerror(errno));
         }
 
         pid_.reset();
@@ -112,7 +120,7 @@ void RpiCamVidWrapper::stop()
     {
         if (errno != ECHILD)
         {
-            perror("waitpid");
+            log_.error("waitpid: {}", std::strerror(errno));
         }
     }
 
@@ -149,7 +157,7 @@ bool RpiCamVidWrapper::isRunning()
         return true;
     }
 
-    perror("waitpid");
+    log_.error("waitpid: {}", std::strerror(errno));
     pid_.reset();
     return false;
 }

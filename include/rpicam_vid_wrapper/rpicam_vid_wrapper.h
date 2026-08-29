@@ -2,10 +2,12 @@
 
 #include <sys/types.h>
 #include <optional>
+#include "logger.h"
 
 class RpiCamVidWrapper {
 
     public:
+        RpiCamVidWrapper();
         ~RpiCamVidWrapper();
 
         std::optional<pid_t> start();
@@ -14,5 +16,6 @@ class RpiCamVidWrapper {
 
     private:
         std::optional<pid_t> pid_;
+        Logger log_;
         
 };

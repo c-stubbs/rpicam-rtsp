@@ -18,9 +18,22 @@ set(CMAKE_CXX_COMPILER=clang++)
 
 # find requried packages
 find_package(PkgConfig REQUIRED)
+find_package(spdlog REQUIRED)
+find_package(fmt REQUIRED)
 pkg_check_modules(GST REQUIRED 
     gstreamer-1.0
     gstreamer-rtsp-server-1.0)
+
+# Add logger library
+add_library(logger INTERFACE)
+
+target_include_directories(logger 
+    INTERFACE 
+    include/logger)
+
+target_link_libraries(logger
+    INTERFACE
+    fmt)
 
 add_subdirectory(src/rpicam_vid_wrapper)
 add_subdirectory(src/rtsp_server)
@@ -36,7 +49,8 @@ target_compile_definitions(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
     rtsp_server
-    rpicam_vid_wrapper)
+    rpicam_vid_wrapper
+    logger)
 
 # Install bins
 install(

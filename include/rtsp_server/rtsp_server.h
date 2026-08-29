@@ -4,6 +4,7 @@
 #include <gst/rtsp-server/rtsp-server.h>
 #include <glib.h>
 #include <thread>
+#include "logger.h"
 
 class RTSPServer {
     
@@ -25,4 +26,6 @@ class RTSPServer {
         int udp_port_ = 5000;
         std::string mount_point_ = "/stream";
         std::thread loop_thread_;
+
+        Logger log_;
 };

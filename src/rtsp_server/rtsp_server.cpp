@@ -1,7 +1,8 @@
 #include "rtsp_server.h"
 #include <iostream>
 
-RTSPServer::RTSPServer()
+RTSPServer::RTSPServer() :
+    log_("rtsp_server", "info")
 {
 }
 
@@ -21,7 +22,7 @@ bool RTSPServer::start()
 
     if (!loop_)
     {
-        std::cerr << "Failed to create GMainLoop\n";
+        log_.error("failed to create g_main_Loop");
         return false;
     }
 
@@ -29,7 +30,7 @@ bool RTSPServer::start()
 
     if (!server_)
     {
-        std::cerr << "Failed to create RTSP server\n";
+        log_.error("failed to create rtsp server");
         g_main_loop_unref(loop_);
         loop_ = nullptr;
         return false;
@@ -47,7 +48,7 @@ bool RTSPServer::start()
 
     if (!mounts)
     {
-        std::cerr << "Failed to get RTSP mount points\n";
+        log_.error("failed to get rtsp mount points");
 
         g_object_unref(server_);
         server_ = nullptr;
@@ -70,7 +71,7 @@ bool RTSPServer::start()
 
     if (!factory)
     {
-        std::cerr << "Failed to create RTSP media factory\n";
+        log_.error("failed to create rtsp media factory");
 
         g_object_unref(mounts);
         g_object_unref(server_);
@@ -98,8 +99,7 @@ bool RTSPServer::start()
 
     if (server_id_ == 0)
     {
-        std::cerr << "Failed to attach RTSP server\n";
-
+        log_.error("failed to attach rtsp server");
         g_object_unref(server_);
         server_ = nullptr;
 
@@ -114,6 +114,7 @@ bool RTSPServer::start()
                 g_main_loop_run(loop_);
             });
 
+    log_.info("started");
     return true;
 }
 
@@ -145,6 +146,8 @@ void RTSPServer::stop()
 
     g_main_loop_unref(loop_);
     loop_ = nullptr;
+
+    log_.info("stopped");
 }
 
 bool RTSPServer::isRunning()
