@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(ov5647-rtsp)
+project(rpicam-rtsp)
 
 include(GNUInstallDirs)
 
@@ -38,6 +38,7 @@ target_link_libraries(logger
 
 add_subdirectory(src/rpicam_vid_wrapper)
 add_subdirectory(src/rtsp_server)
+add_subdirectory(src/app)
 
 # Add main executable
 add_executable(${PROJECT_NAME} 
@@ -51,6 +52,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
     rtsp_server
     rpicam_vid_wrapper
+    app
     logger
     tomlplusplus)
 

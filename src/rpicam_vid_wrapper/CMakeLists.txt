@@ -10,9 +10,10 @@ target_include_directories(rpicam_vid_wrapper
     ${CMAKE_SOURCE_DIR}/include/rpicam_vid_wrapper)
 
 target_link_libraries(rpicam_vid_wrapper
+    PUBLIC
+    rpicam_vid_wrapper_config
     PRIVATE
-    logger
-    rpicam_vid_wrapper_config)
+    logger)
 
 # rpicam-vid wrapper config
 add_library(rpicam_vid_wrapper_config)
