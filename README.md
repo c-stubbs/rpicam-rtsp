@@ -190,4 +190,4 @@ This project is under active development.
 
 ## License
 
-TODO
+See: [License][LICENSE]
