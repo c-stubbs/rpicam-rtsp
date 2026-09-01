@@ -3,10 +3,11 @@
 #include <thread>
 #include <csignal>
 
-App::App()
-    : log_("app", "info")
-    , rpicam_()
-    , rtsp_server_()
+App::App(const AppConfig& config)
+    : config_(config)
+    , log_("app", config.log_level)
+    , rpicam_(config.rpicam_vid_wrapper_config)
+    , rtsp_server_(config.rtsp_server_config)
 {
 }
 

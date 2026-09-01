@@ -5,8 +5,9 @@
 #include <vector>
 #include <string>
 
-RpiCamVidWrapper::RpiCamVidWrapper() : 
-    log_("rpicam_vid_wrapper","info")
+RpiCamVidWrapper::RpiCamVidWrapper(const RpiCamVidWrapperConfig& config) 
+    : config_(config) 
+    , log_("rpicam_vid_wrapper", config.log_level)
 {
 }
 
@@ -39,12 +40,12 @@ std::optional<pid_t> RpiCamVidWrapper::start()
             "rpicam-vid",
             "-t", "0",
             "-v", "0",
-            "--width", "1920",
-            "--height", "1080",
-            "--framerate", "15",
-            "--bitrate", "1000000",
+            "--width", std::to_string(config_.width),
+            "--height", std::to_string(config_.height),
+            "--framerate", std::to_string(config_.framerate),
+            "--bitrate", std::to_string(config_.bitrate),
             "--inline",
-            "-o", "udp://127.0.0.1:5000"
+            "-o", "udp://127.0.0.1:" + std::to_string(config_.port)
         };
 
         std::vector<char*> argv;

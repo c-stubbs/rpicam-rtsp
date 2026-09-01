@@ -4,12 +4,14 @@
 #include <gst/rtsp-server/rtsp-server.h>
 #include <glib.h>
 #include <thread>
+
 #include "logger.h"
+#include "rtsp_server_config.h"
 
 class RTSPServer {
     
     public:
-        RTSPServer();
+        RTSPServer(const RtspServerConfig& config);
         ~RTSPServer();
 
         bool start();
@@ -28,4 +30,5 @@ class RTSPServer {
         std::thread loop_thread_;
 
         Logger log_;
+        const RtspServerConfig config_;
 };

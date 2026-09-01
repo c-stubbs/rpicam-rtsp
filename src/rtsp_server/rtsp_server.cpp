@@ -1,8 +1,9 @@
 #include "rtsp_server.h"
 #include <iostream>
 
-RTSPServer::RTSPServer() :
-    log_("rtsp_server", "info")
+RTSPServer::RTSPServer(const RtspServerConfig& config) 
+    : config_(config)
+    , log_("rtsp_server", config.log_level)
 {
 }
 
@@ -42,7 +43,7 @@ bool RTSPServer::start()
 
     gst_rtsp_server_set_service(
             server_,
-            std::to_string(port_).c_str());
+            std::to_string(config_.port).c_str());
 
     GstRTSPMountPoints* mounts = gst_rtsp_server_get_mount_points(server_);
 
@@ -61,7 +62,7 @@ bool RTSPServer::start()
 
     std::string pipeline =
         "( udpsrc port=" +
-        std::to_string(udp_port_) +
+        std::to_string(config_.udp_port) +
         " "
         "caps=\"video/x-h264,stream-format=byte-stream,alignment=nal\" "
         "! rtph264pay name=pay0 pt=96 config-interval=1 mtu=1200 )";
@@ -89,7 +90,7 @@ bool RTSPServer::start()
 
     gst_rtsp_mount_points_add_factory(
         mounts,
-        mount_point_.c_str(),
+        config_.mount_point.c_str(),
         factory);
 
     g_object_unref(mounts);

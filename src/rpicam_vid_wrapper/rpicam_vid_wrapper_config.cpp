@@ -9,15 +9,17 @@ RpiCamVidWrapperConfig RpiCamVidWrapperConfig::fromToml(const toml::v3::ex::pars
                                   config["rpicam_vid"]["height"].value_or(720),
                                   config["rpicam_vid"]["framerate"].value_or(15),
                                   config["rpicam_vid"]["bitrate"].value_or(1000000),
-                                  config["rpicam_vid"]["port"].value_or(5000)};
+                                  config["rpicam_vid"]["port"].value_or(5000),
+                                  config["rpicam_vid"]["log_level"].value_or("info")};
 }
 
-RpiCamVidWrapperConfig::RpiCamVidWrapperConfig(int width, int height, int framerate, int bitrate, int port) :
+RpiCamVidWrapperConfig::RpiCamVidWrapperConfig(int width, int height, int framerate, int bitrate, int port, std::string log_level) :
     width(width),
     height(height),
     framerate(framerate),
     bitrate(bitrate),
-    port(port)
+    port(port),
+    log_level(log_level)
 {
     validate();
 }

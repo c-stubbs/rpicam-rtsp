@@ -5,11 +5,12 @@
 #include "rpicam_vid_wrapper.h"
 #include "rtsp_server.h"
 #include "logger.h"
+#include "app_config.h"
 
 class App {
 
     public:
-        App(); 
+        App(const AppConfig& config); 
         int run(int& argc, char *argv[]);
     
     private:
@@ -19,4 +20,5 @@ class App {
         RpiCamVidWrapper rpicam_;
         RTSPServer rtsp_server_;
         Logger log_;
+        const AppConfig config_;
 };
