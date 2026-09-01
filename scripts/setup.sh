@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Install GLib, GStreamer core libraries, GStreamer RTSP server, GI, and Python bindings for gstreamer
 sudo apt update
 sudo apt install libglib2.0-dev \
         libgstreamer1.0-dev \
@@ -15,5 +14,4 @@ sudo apt install libglib2.0-dev \
         libspdlog-dev \
         libtomlplusplus-dev \
         rpicam-apps
-
 

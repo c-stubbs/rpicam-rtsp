@@ -73,8 +73,8 @@ Clone the repository:
 ```bash
 git clone https://github.com/<your-username>/rpicam-rtsp.git    
 cd rpicam-rtsp    
-./setup.sh    
-./build.sh    
+./scripts/setup.sh    
+./scripts/build.sh    
 ```
 
 The resulting executable can then be run on the Raspberry Pi.
