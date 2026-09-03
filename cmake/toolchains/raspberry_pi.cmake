@@ -1,10 +1,10 @@
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR aarch64)
 
-set(RPI_SYSROOT "${CMAKE_SOURCE_DIR}/sysroot")
+set(SYSROOT $ENV{RPI_SYSROOT})
 
-set(CMAKE_SYSROOT "${RPI_SYSROOT}")
-set(CMAKE_FIND_ROOT_PATH "${RPI_SYSROOT}")
+set(CMAKE_SYSROOT "${SYSROOT}")
+set(CMAKE_FIND_ROOT_PATH "${SYSROOT}")
 
 set(CMAKE_C_COMPILER aarch64-linux-gnu-gcc)
 set(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++)
@@ -15,12 +15,12 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 list(APPEND CMAKE_PREFIX_PATH
-    "${RPI_SYSROOT}/usr/lib/aarch64-linux-gnu/cmake"
+    "${SYSROOT}/usr/lib/aarch64-linux-gnu/cmake"
 )
 
 # pkg-config
-set(ENV{PKG_CONFIG_SYSROOT_DIR} "${RPI_SYSROOT}")
+set(ENV{PKG_CONFIG_SYSROOT_DIR} "${SYSROOT}")
 
 set(ENV{PKG_CONFIG_LIBDIR}
-    "${RPI_SYSROOT}/usr/lib/aarch64-linux-gnu/pkgconfig:${RPI_SYSROOT}/usr/share/pkgconfig"
+    "${SYSROOT}/usr/lib/aarch64-linux-gnu/pkgconfig:${SYSROOT}/usr/share/pkgconfig"
 )
