@@ -1,1 +1,6 @@
 build/
+install/
+xbuild/
+xinstall/
+sysroot/
+.env
