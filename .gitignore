@@ -4,3 +4,4 @@ xbuild/
 xinstall/
 sysroot/
 .env
+compile_commands.json

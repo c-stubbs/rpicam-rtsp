@@ -3,6 +3,7 @@
 set -e
 
 cmake -S . -B xbuild \
+    -G Ninja \
     --toolchain ${PWD}/cmake/toolchains/raspberry_pi.cmake \
     -DCMAKE_INSTALL_PREFIX=${PWD}/xinstall
 
