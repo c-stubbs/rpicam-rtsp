@@ -68,16 +68,92 @@ GStreamer development packages are also required to build the project.
 
 ## Building
 
-Clone the repository:
+### On a Raspberry Pi
+
+Clone the repository and run the setup and build scripts:
 
 ```bash
-git clone https://github.com/<your-username>/rpicam-rtsp.git    
-cd rpicam-rtsp    
-./scripts/setup.sh    
-./scripts/build.sh    
+git clone https://github.com/c-stubbs/rpicam-rtsp.git
+cd rpicam-rtsp
+./scripts/setup.sh
+./scripts/build.sh
 ```
 
-The resulting executable can then be run on the Raspberry Pi.
+The resulting executable is installed to:
+
+```text
+install/bin/rpicam-rtsp
+```
+
+It can be run directly on the Raspberry Pi.
+
+### Cross-Compiling from a Separate Machine
+
+The project can also be cross-compiled for the Raspberry Pi from an x86-64 Linux machine. The build uses a sysroot generated from the Raspberry Pi so that the compiler and linker can use the Pi's libraries and headers.
+
+#### 1. Clone the repository
+
+Clone the repository on both the Raspberry Pi and the development machine:
+
+```bash
+git clone https://github.com/c-stubbs/rpicam-rtsp.git
+cd rpicam-rtsp
+```
+
+#### 2. Set up the Raspberry Pi
+
+On the Raspberry Pi, run:
+
+```bash
+./scripts/setup.sh
+```
+
+This installs the dependencies required to build and run `rpicam-rtsp`.
+
+#### 3. Generate the sysroot
+
+On the development machine, generate a sysroot from the Raspberry Pi:
+
+```bash
+./scripts/generate-sysroot.sh
+```
+
+The sysroot contains the Raspberry Pi's headers, libraries, and CMake/pkg-config files needed for cross-compilation.
+
+#### 4. Configure the cross-compilation environment
+
+Set the environment variables required by the cross-compilation toolchain:
+
+```bash
+export RPI_SYSROOT=...
+```
+
+See the toolchain configuration in `cmake/toolchains/raspberry_pi.cmake` for the required configuration.
+
+#### 5. Build
+
+Run the cross-compilation build:
+
+```bash
+./scripts/xbuild.sh
+```
+
+The resulting executable is installed to:
+
+```text
+xinstall/bin/rpicam-rtsp
+```
+
+#### 6. Copy the executable to the Raspberry Pi
+
+Copy the executable to the Raspberry Pi:
+
+```bash
+scp xinstall/bin/rpicam-rtsp <user>@<raspberry-pi>:/path/to/destination/
+```
+
+The executable can then be run on the Raspberry Pi.
+
 
 ## Usage
 
