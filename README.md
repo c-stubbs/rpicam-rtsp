@@ -73,7 +73,7 @@ GStreamer development packages are also required to build the project.
 Clone the repository and run the setup and build scripts:
 
 ```bash
-git clone https://github.com/c-stubbs/rpicam-rtsp.git
+git clone --recurse-submodules https://github.com/c-stubbs/rpicam-rtsp.git
 cd rpicam-rtsp
 ./scripts/setup.sh
 ./scripts/build.sh
@@ -96,7 +96,7 @@ The project can also be cross-compiled for the Raspberry Pi from an x86-64 Linux
 Clone the repository on both the Raspberry Pi and the development machine:
 
 ```bash
-git clone https://github.com/c-stubbs/rpicam-rtsp.git
+git clone --recurse-submodules https://github.com/c-stubbs/rpicam-rtsp.git
 cd rpicam-rtsp
 ```
 
