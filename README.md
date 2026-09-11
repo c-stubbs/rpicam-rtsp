@@ -75,7 +75,8 @@ Clone the repository and run the setup and build scripts:
 ```bash
 git clone --recurse-submodules https://github.com/c-stubbs/rpicam-rtsp.git
 cd rpicam-rtsp
-./scripts/setup.sh
+./scripts/setup.sh build
+./scripts/setup.sh runtime
 ./scripts/build.sh
 ```
 
@@ -105,10 +106,10 @@ cd rpicam-rtsp
 On the Raspberry Pi, run:
 
 ```bash
-./scripts/setup.sh
+./scripts/setup.sh build
 ```
 
-This installs the dependencies required to build and run `rpicam-rtsp`.
+This installs the dependencies required to build `rpicam-rtsp`. Note: runtime dependencies are installed automatically via the deb installation.
 
 #### 3. Generate the sysroot
 
