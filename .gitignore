@@ -3,5 +3,6 @@ install/
 xbuild/
 xinstall/
 sysroot/
+.cache/
 .env
 compile_commands.json
