@@ -89,7 +89,7 @@ It can be run directly on the Raspberry Pi.
 
 ### Cross-Compiling from a Separate Machine
 
-The project can also be cross-compiled for the Raspberry Pi from an x86-64 Linux machine. The build uses a sysroot generated from the Raspberry Pi so that the compiler and linker can use the Pi's libraries and headers.
+The project can also be cross-compiled for the Raspberry Pi from an x86-64 Linux machine. The build uses a sysroot generated from the Raspberry Pi so that the compiler and linker can use the Pi's libraries and headers. The output of the build process is a .deb file which can be copied to the Pi and installed via dpkg or apt.
 
 #### 1. Clone the repository
 
@@ -138,22 +138,28 @@ Run the cross-compilation build:
 ./scripts/xbuild.sh
 ```
 
-The resulting executable is installed to:
+The resulting deb file is located at:
 
 ```text
-xinstall/bin/rpicam-rtsp
+xbuild/rpicam-rtsp_0.0.1_arm64.deb
 ```
 
-#### 6. Copy the executable to the Raspberry Pi
+#### 6. Copy the debfile to the Raspberry Pi
 
-Copy the executable to the Raspberry Pi:
+Copy the .deb to the Raspberry Pi:
 
 ```bash
-scp xinstall/bin/rpicam-rtsp <user>@<raspberry-pi>:/path/to/destination/
+scp xbuild/rpicam-rtsp_0.0.1_arm64.deb <user>@<raspberry-pi>:~/.
 ```
 
 The executable can then be run on the Raspberry Pi.
 
+#### 7. Install using apt
+
+```bash
+ssh <user>@<raspberry-pi>
+sudo apt install -y ./rpicam-rtsp_0.0.1_arm64.deb
+```
 
 ## Usage
 
