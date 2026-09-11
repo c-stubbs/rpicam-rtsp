@@ -3,18 +3,12 @@ project(rpicam-rtsp)
 
 include(GNUInstallDirs)
 
-set(CONFIG_DIR
-    "${CMAKE_INSTALL_PREFIX}/config/")
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_BUILD_TYPE Debug)
-
-#set(CMAKE_C_COMPILER=clang)
-#set(CMAKE_CXX_COMPILER=clang++)
 
 # find requried packages
 find_package(PkgConfig REQUIRED)
@@ -67,5 +61,19 @@ install(
 # Install configs
 install(
     DIRECTORY config/
-    DESTINATION config
+    DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/rpicam-rtsp
 )
+
+# CPack for .deb file
+file(WRITE ${CMAKE_BINARY_DIR}/conffiles "/etc/rpicam-rtsp/config.toml\n")
+
+set(CPACK_GENERATOR "DEB")
+set(CPACK_PACKAGE_NAME "rpicam-rtsp")
+set(CPACK_PACKAGE_VERSION "0.0.1")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A GStreamer-based RTSP wrapper around rpicam-vid")
+set(CPACK_DEBIAN_PACKAGE_MANTAINER "Chandler Stubbs")
+set(CPACK_PACKAGE_CONTACT "todo@gmail.com")
+set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_BINARY_DIR}/conffiles")
+
+include(CPack)

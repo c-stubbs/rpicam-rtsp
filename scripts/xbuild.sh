@@ -9,5 +9,5 @@ cmake -S . -B xbuild \
 
 cmake --build xbuild --parallel 1 
 
-cmake --install xbuild
+cd xbuild && cpack -G DEB && cd -
 

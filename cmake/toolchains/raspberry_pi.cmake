@@ -18,9 +18,10 @@ list(APPEND CMAKE_PREFIX_PATH
     "${SYSROOT}/usr/lib/aarch64-linux-gnu/cmake"
 )
 
-# pkg-config
 set(ENV{PKG_CONFIG_SYSROOT_DIR} "${SYSROOT}")
 
 set(ENV{PKG_CONFIG_LIBDIR}
     "${SYSROOT}/usr/lib/aarch64-linux-gnu/pkgconfig:${SYSROOT}/usr/share/pkgconfig"
 )
+
+set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "arm64")

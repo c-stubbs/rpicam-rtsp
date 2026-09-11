@@ -1,4 +1,5 @@
 #include <exception>
+#include <string_view>
 #include <toml++/toml.h>
 
 #include "logger.h"
@@ -8,7 +9,7 @@ int main(int argc, char *argv[])
 {
     Logger log("main", "trace");
 
-    std::string config_path = std::string(CONFIG_DIR) + std::string("config.toml");
+    constexpr std::string_view config_path = "/usr/etc/rpicam-rtsp/config.toml";
 
     auto config = toml::parse_file(config_path);
     AppConfig app_config = AppConfig::fromToml(config);
