@@ -12,6 +12,5 @@ sudo apt install libglib2.0-dev \
         gir1.2-gstreamer-1.0 \
         gir1.2-gst-rtsp-server-1.0 \
         libspdlog-dev \
-        libtomlplusplus-dev \
-        rpicam-apps
+        libtomlplusplus-dev 
 

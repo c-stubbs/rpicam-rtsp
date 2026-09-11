@@ -5,10 +5,8 @@ include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
 
 # find requried packages
 find_package(PkgConfig REQUIRED)
@@ -38,10 +36,6 @@ add_subdirectory(src/api)
 # Add main executable
 add_executable(${PROJECT_NAME} 
     src/main.cpp)
-
-target_compile_definitions(${PROJECT_NAME} 
-    PRIVATE
-    CONFIG_DIR="${CONFIG_DIR}")
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
@@ -75,5 +69,6 @@ set(CPACK_DEBIAN_PACKAGE_MANTAINER "Chandler Stubbs")
 set(CPACK_PACKAGE_CONTACT "todo@gmail.com")
 set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
 set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_BINARY_DIR}/conffiles")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "rpicam-apps, libgstreamer1.0-0, libgstrtspserver-1.0-0, libfmt10")
 
 include(CPack)
