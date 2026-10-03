@@ -5,7 +5,7 @@
 class ApiConfig {
 
     public:
-        static ApiConfig fromToml(const toml::v3::ex::parse_result& config);
+        static ApiConfig fromToml(const toml::table& config);
         ApiConfig(std::string log_level);
 
         void validate() const;

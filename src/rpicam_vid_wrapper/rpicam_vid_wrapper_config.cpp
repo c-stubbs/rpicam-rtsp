@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <sstream>
 
-RpiCamVidWrapperConfig RpiCamVidWrapperConfig::fromToml(const toml::v3::ex::parse_result& config)
+RpiCamVidWrapperConfig RpiCamVidWrapperConfig::fromToml(const toml::table& config)
 {
     return RpiCamVidWrapperConfig{config["rpicam_vid"]["width"].value_or(1280),
                                   config["rpicam_vid"]["height"].value_or(720),

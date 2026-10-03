@@ -1,6 +1,6 @@
 #include "app_config.h"
 
-AppConfig AppConfig::fromToml(const toml::v3::ex::parse_result& config)
+AppConfig AppConfig::fromToml(const toml::table& config)
 {
     return AppConfig{config["app"]["log_level"].value_or("info"),
                      RtspServerConfig::fromToml(config),

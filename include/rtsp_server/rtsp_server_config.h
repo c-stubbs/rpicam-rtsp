@@ -7,7 +7,7 @@
 class RtspServerConfig {
 
     public:
-        static RtspServerConfig fromToml(const toml::v3::ex::parse_result& config);
+        static RtspServerConfig fromToml(const toml::table& config);
         RtspServerConfig(int port, int udp_port, std::string mount_point, std::string log_level);
 
         int port;

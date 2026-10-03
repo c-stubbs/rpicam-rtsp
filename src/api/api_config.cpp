@@ -1,6 +1,6 @@
 #include "api_config.h"
 
-ApiConfig ApiConfig::fromToml(const toml::v3::ex::parse_result& config)
+ApiConfig ApiConfig::fromToml(const toml::table& config)
 {
     return ApiConfig{config["api"]["log_level"].value_or("info")};
 }

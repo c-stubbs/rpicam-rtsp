@@ -8,7 +8,7 @@
 class AppConfig {
 
     public:
-        static AppConfig fromToml(const toml::v3::ex::parse_result& config);
+        static AppConfig fromToml(const toml::table& config);
         AppConfig(std::string log_level, 
                   RtspServerConfig rtsp_server_config, 
                   RpiCamVidWrapperConfig rpicam_vid_wrapper_config);

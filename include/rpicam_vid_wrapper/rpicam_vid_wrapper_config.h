@@ -6,7 +6,7 @@
 class RpiCamVidWrapperConfig {
 
     public:
-        static RpiCamVidWrapperConfig fromToml(const toml::v3::ex::parse_result& config);
+        static RpiCamVidWrapperConfig fromToml(const toml::table& config);
         RpiCamVidWrapperConfig(int width, int height, int framerate, int bitrate, int port, std::vector<std::string> raw_args, std::string log_level);
         
         int width;

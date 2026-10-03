@@ -1,5 +1,4 @@
 #include "rtsp_server.h"
-#include <iostream>
 
 RTSPServer::RTSPServer(const RtspServerConfig& config) 
     : config_(config)

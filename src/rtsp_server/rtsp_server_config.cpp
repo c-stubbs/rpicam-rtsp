@@ -1,7 +1,7 @@
 #include "rtsp_server_config.h"
 #include <stdexcept>
 
-RtspServerConfig RtspServerConfig::fromToml(const toml::v3::ex::parse_result& config)
+RtspServerConfig RtspServerConfig::fromToml(const toml::table& config)
 {
     return RtspServerConfig{config["rtsp_server"]["port"].value_or(8554),
                             config["rtsp_server"]["udp_port"].value_or(5000),
