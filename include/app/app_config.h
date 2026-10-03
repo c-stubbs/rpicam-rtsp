@@ -4,6 +4,7 @@
 
 #include "rpicam_vid_wrapper_config.h"
 #include "rtsp_server_config.h"
+#include "api_config.h"
 
 class AppConfig {
 
@@ -11,12 +12,14 @@ class AppConfig {
         static AppConfig fromToml(const toml::table& config);
         AppConfig(std::string log_level, 
                   RtspServerConfig rtsp_server_config, 
-                  RpiCamVidWrapperConfig rpicam_vid_wrapper_config);
+                  RpiCamVidWrapperConfig rpicam_vid_wrapper_config,
+                  ApiConfig api_config);
 
         std::string log_level;
 
         RtspServerConfig rtsp_server_config;
         RpiCamVidWrapperConfig rpicam_vid_wrapper_config;
+        ApiConfig api_config;
 
         void validate() const;
 

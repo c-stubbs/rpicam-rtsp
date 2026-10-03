@@ -17,7 +17,8 @@ target_link_libraries(app
     PRIVATE
     logger
     rtsp_server
-    rpicam_vid_wrapper)
+    rpicam_vid_wrapper
+    api)
 
 # rtsp server config
 add_library(app_config)
@@ -36,4 +37,5 @@ target_link_libraries(app_config
     PUBLIC
     tomlplusplus
     rpicam_vid_wrapper_config
-    rtsp_server_config)
+    rtsp_server_config
+    api_config)

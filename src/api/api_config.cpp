@@ -2,11 +2,13 @@
 
 ApiConfig ApiConfig::fromToml(const toml::table& config)
 {
-    return ApiConfig{config["api"]["log_level"].value_or("info")};
+    return ApiConfig{config["api"]["run"].value_or(false),
+                     config["api"]["log_level"].value_or("info")};
 }
 
-ApiConfig::ApiConfig(std::string log_level)
-    : log_level(log_level)
+ApiConfig::ApiConfig(bool run, std::string log_level)
+    : run(run)
+    , log_level(log_level)
 {
     validate();
 }

@@ -8,7 +8,6 @@ target_sources(api
 target_include_directories(api
     PUBLIC
     ${CMAKE_SOURCE_DIR}/include/api
-    PRIVATE
     ${CMAKE_SOURCE_DIR}/external/cpp-httplib)
 
 target_link_libraries(api

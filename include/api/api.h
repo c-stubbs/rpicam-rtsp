@@ -9,6 +9,8 @@ class Api {
     public:
         Api(const ApiConfig& config);
 
+        bool start();
+
     private:
         httplib::Server server;
 

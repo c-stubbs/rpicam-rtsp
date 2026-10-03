@@ -4,6 +4,7 @@
 
 #include "rpicam_vid_wrapper.h"
 #include "rtsp_server.h"
+#include "api.h"
 #include "logger.h"
 #include "app_config.h"
 
@@ -19,6 +20,7 @@ class App {
         
         RpiCamVidWrapper rpicam_;
         RTSPServer rtsp_server_;
+        Api api_;
         Logger log_;
         const AppConfig config_;
 };

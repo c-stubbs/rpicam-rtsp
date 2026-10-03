@@ -8,6 +8,7 @@ App::App(const AppConfig& config)
     , log_("app", config.log_level)
     , rpicam_(config.rpicam_vid_wrapper_config)
     , rtsp_server_(config.rtsp_server_config)
+    , api_(config.api_config)
 {
 }
 
@@ -26,6 +27,12 @@ int App::run(int& argc, char *argv[])
     if (!rtsp_server_.start())
     {
         log_.critical("rtsp server failed to start");
+        return 1;
+    }
+
+    if (config_.api_config.run && !api_.start())
+    {
+        log_.critical("api failed to start");
         return 1;
     }
 
