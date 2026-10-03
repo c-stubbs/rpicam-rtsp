@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <array> 
 #include <algorithm>
+#include <sstream>
 
 RpiCamVidWrapperConfig RpiCamVidWrapperConfig::fromToml(const toml::v3::ex::parse_result& config)
 {
@@ -10,15 +11,32 @@ RpiCamVidWrapperConfig RpiCamVidWrapperConfig::fromToml(const toml::v3::ex::pars
                                   config["rpicam_vid"]["framerate"].value_or(15),
                                   config["rpicam_vid"]["bitrate"].value_or(1000000),
                                   config["rpicam_vid"]["port"].value_or(5000),
+                                  splitString(config["rpicam_vid"]["raw_args"].value_or(""), ' '),
                                   config["rpicam_vid"]["log_level"].value_or("info")};
 }
 
-RpiCamVidWrapperConfig::RpiCamVidWrapperConfig(int width, int height, int framerate, int bitrate, int port, std::string log_level) :
+std::vector<std::string> RpiCamVidWrapperConfig::splitString(const std::string& input, const char& delim)
+{
+    std::vector<std::string> result;
+    std::string item;
+
+    std::stringstream ss(input);
+    
+    while (std::getline(ss, item, delim))
+    {
+        result.push_back(item);
+    }
+
+    return result;
+}
+
+RpiCamVidWrapperConfig::RpiCamVidWrapperConfig(int width, int height, int framerate, int bitrate, int port, std::vector<std::string> raw_args, std::string log_level) :
     width(width),
     height(height),
     framerate(framerate),
     bitrate(bitrate),
     port(port),
+    raw_args(raw_args),
     log_level(log_level)
 {
     validate();

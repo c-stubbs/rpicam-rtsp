@@ -35,7 +35,8 @@ std::optional<pid_t> RpiCamVidWrapper::start()
 
     // Child branch
     if (pid == 0)
-    { 
+    {
+        // Default args not including "raw" provided args
         std::vector<std::string> args = {
             "rpicam-vid",
             "-t", "0",
@@ -48,6 +49,27 @@ std::optional<pid_t> RpiCamVidWrapper::start()
             "-o", "udp://127.0.0.1:" + std::to_string(config_.port)
         };
 
+        // Loop through the raw args provided via config, if they override
+        // anything already provided, replace it. If it doesn't, append.
+        for (std::size_t i = 0; i + 1 < config_.raw_args.size(); i += 2)
+        {
+            auto first = config_.raw_args[i];
+            auto second = config_.raw_args[i + 1];
+
+            auto it = std::find(args.begin(), args.end(), first);
+            if (it != args.end() && std::next(it) != args.end())
+            {
+                auto next = std::next(it);
+                *next = second;
+            }
+            else
+            {
+                args.push_back(first);
+                args.push_back(second);
+            }
+        }
+
+        // Convert string vector of args into char vector
         std::vector<char*> argv;
 
         for (auto& arg : args) {
