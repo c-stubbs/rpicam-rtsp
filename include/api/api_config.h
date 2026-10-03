@@ -6,11 +6,12 @@ class ApiConfig {
 
     public:
         static ApiConfig fromToml(const toml::table& config);
-        ApiConfig(std::string log_level);
+        ApiConfig(bool run, std::string log_level);
 
         void validate() const;
 
         std::string log_level;
+        bool run;
 
     private:
 

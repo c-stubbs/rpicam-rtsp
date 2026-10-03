@@ -4,13 +4,15 @@ AppConfig AppConfig::fromToml(const toml::table& config)
 {
     return AppConfig{config["app"]["log_level"].value_or("info"),
                      RtspServerConfig::fromToml(config),
-                     RpiCamVidWrapperConfig::fromToml(config)};
+                     RpiCamVidWrapperConfig::fromToml(config),
+                     ApiConfig::fromToml(config)};
 }
 
-AppConfig::AppConfig(std::string log_level, RtspServerConfig rtsp_server_config, RpiCamVidWrapperConfig rpicam_vid_wrapper_config)
+AppConfig::AppConfig(std::string log_level, RtspServerConfig rtsp_server_config, RpiCamVidWrapperConfig rpicam_vid_wrapper_config, ApiConfig api_config)
     : log_level(log_level)
     , rtsp_server_config(rtsp_server_config)
     , rpicam_vid_wrapper_config(rpicam_vid_wrapper_config)
+    , api_config(api_config)
 {
     validate();
 }
