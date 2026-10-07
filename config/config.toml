@@ -14,5 +14,3 @@ height = 1080
 framerate = 15
 bitrate = 1000000
 port = 5000
-raw_args = "--awbgains 1,1"
-
