@@ -1,0 +1,253 @@
+openapi: 3.1.0
+
+info:
+  title: rpicam-rtsp API
+  description: REST API for managing a Raspberry Pi camera node.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:1234
+    description: Local development server
+
+tags:
+  - name: Status
+  - name: Camera
+  - name: Stream
+
+paths:
+  /api/v1/health:
+    get:
+      tags:
+        - Status
+      summary: Check API health
+      operationId: getHealth
+      responses:
+        "200":
+          description: API is responding
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                properties:
+                  status:
+                    type: string
+                    enum:
+                      - ok
+                    example: ok
+
+  /api/v1/status:
+    get:
+      tags:
+        - Status
+      summary: Get camera node status
+      operationId: getStatus
+      responses:
+        "200":
+          description: Current node status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NodeStatus"
+
+  /api/v1/camera:
+    get:
+      tags:
+        - Camera
+      summary: Get camera configuration
+      operationId: getCamera
+      responses:
+        "200":
+          description: Current camera configuration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CameraConfig"
+
+    patch:
+      tags:
+        - Camera
+      summary: Update camera configuration
+      operationId: updateCamera
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CameraConfigUpdate"
+      responses:
+        "200":
+          description: Configuration updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CameraConfig"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/InvalidConfiguration"
+        "409":
+          $ref: "#/components/responses/Conflict"
+
+  /api/v1/camera/start:
+    post:
+      tags:
+        - Camera
+      summary: Start camera capture
+      operationId: startCamera
+      responses:
+        "202":
+          description: Camera startup initiated
+        "409":
+          $ref: "#/components/responses/Conflict"
+
+  /api/v1/camera/stop:
+    post:
+      tags:
+        - Camera
+      summary: Stop camera capture
+      operationId: stopCamera
+      responses:
+        "200":
+          description: Camera stopped
+        "409":
+          $ref: "#/components/responses/Conflict"
+
+  /api/v1/stream:
+    get:
+      tags:
+        - Stream
+      summary: Get RTSP stream status
+      operationId: getStream
+      responses:
+        "200":
+          description: Current streaming status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StreamStatus"
+
+components:
+  schemas:
+    NodeStatus:
+      type: object
+      required:
+        - state
+        - camera
+        - stream
+      properties:
+        state:
+          type: string
+          enum:
+            - running
+            - degraded
+            - error
+        camera:
+          $ref: "#/components/schemas/CameraStatus"
+        stream:
+          $ref: "#/components/schemas/StreamStatus"
+
+    CameraConfig:
+      type: object
+      required:
+        - width
+        - height
+        - framerate
+      properties:
+        width:
+          type: integer
+          enum: [640, 1280, 1920]
+        height:
+          type: integer
+          enum: [480, 720, 1080]
+        framerate:
+          type: integer
+          minimum: 1
+          maximum: 60
+
+    CameraConfigUpdate:
+      type: object
+      minProperties: 1
+      properties:
+        width:
+          type: integer
+          enum: [640, 1280, 1920]
+        height:
+          type: integer
+          enum: [480, 720, 1080]
+        framerate:
+          type: integer
+          minimum: 1
+          maximum: 60
+      additionalProperties: false
+
+    CameraStatus:
+      type: object
+      required:
+        - state
+      properties:
+        state:
+          type: string
+          enum:
+            - stopped
+            - starting
+            - running
+            - stopping
+            - error
+
+    StreamStatus:
+      type: object
+      required:
+        - state
+        - url
+      properties:
+        state:
+          type: string
+          enum:
+            - stopped
+            - starting
+            - running
+            - stopping
+            - error
+        url:
+          type: string
+          format: uri
+
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+
+  responses:
+    BadRequest:
+      description: Malformed request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+    InvalidConfiguration:
+      description: Invalid camera configuration
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+    Conflict:
+      description: Operation conflicts with the current state
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
