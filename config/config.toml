@@ -1,6 +1,9 @@
 [app]
 log_level = "info"
 
+[api]
+run = true
+
 [rtsp_server]
 log_level = "info"
 port = 8554
