@@ -4,6 +4,7 @@
 #include <cerrno>
 #include <vector>
 #include <string>
+#include <sstream>
 
 RpiCamVidWrapper::RpiCamVidWrapper(const RpiCamVidWrapperConfig& config) 
     : config_(config) 
@@ -68,6 +69,14 @@ std::optional<pid_t> RpiCamVidWrapper::start()
                 args.push_back(second);
             }
         }
+
+        std::stringstream arg_stream;
+        for (const auto& arg : args)
+        {
+            arg_stream << arg << " ";
+        }
+        std::string arg_string = arg_stream.str();
+        log_.debug("rpicam-vid args: {}", arg_string);
 
         // Convert string vector of args into char vector
         std::vector<char*> argv;

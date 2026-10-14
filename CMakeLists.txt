@@ -63,7 +63,7 @@ file(WRITE ${CMAKE_BINARY_DIR}/conffiles "/etc/rpicam-rtsp/config.toml\n")
 
 set(CPACK_GENERATOR "DEB")
 set(CPACK_PACKAGE_NAME "rpicam-rtsp")
-set(CPACK_PACKAGE_VERSION "0.0.1")
+set(CPACK_PACKAGE_VERSION "1.0.0")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A GStreamer-based RTSP wrapper around rpicam-vid")
 set(CPACK_DEBIAN_PACKAGE_MANTAINER "Chandler Stubbs")
 set(CPACK_PACKAGE_CONTACT "todo@gmail.com")
