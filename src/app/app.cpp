@@ -45,6 +45,7 @@ int App::run(int& argc, char *argv[])
 
     log_.info("stopping execution");
 
+    api_.stop();
     rtsp_server_.stop();
     rpicam_.stop();
 
