@@ -8,11 +8,13 @@ class RtspServerConfig {
 
     public:
         static RtspServerConfig fromToml(const toml::table& config);
-        RtspServerConfig(int port, int udp_port, std::string mount_point, std::string log_level);
+        RtspServerConfig(int port, int udp_port, std::string mount_point, std::string pipeline, bool run, std::string log_level);
 
         int port;
         int udp_port;
         std::string mount_point;
+        std::string pipeline;
+        bool run;
         std::string log_level;
 
         void validate() const;

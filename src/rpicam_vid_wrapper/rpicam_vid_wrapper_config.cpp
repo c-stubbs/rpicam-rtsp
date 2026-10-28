@@ -12,6 +12,7 @@ RpiCamVidWrapperConfig RpiCamVidWrapperConfig::fromToml(const toml::table& confi
                                   config["rpicam_vid"]["bitrate"].value_or(1000000),
                                   config["rpicam_vid"]["port"].value_or(5000),
                                   splitString(config["rpicam_vid"]["raw_args"].value_or(""), ' '),
+                                  config["rpicam_vid"]["run"].value_or(true),
                                   config["rpicam_vid"]["log_level"].value_or("info")};
 }
 
@@ -30,13 +31,14 @@ std::vector<std::string> RpiCamVidWrapperConfig::splitString(const std::string& 
     return result;
 }
 
-RpiCamVidWrapperConfig::RpiCamVidWrapperConfig(int width, int height, int framerate, int bitrate, int port, std::vector<std::string> raw_args, std::string log_level) :
+RpiCamVidWrapperConfig::RpiCamVidWrapperConfig(int width, int height, int framerate, int bitrate, int port, std::vector<std::string> raw_args, bool run, std::string log_level) :
     width(width),
     height(height),
     framerate(framerate),
     bitrate(bitrate),
     port(port),
     raw_args(raw_args),
+    run(run),
     log_level(log_level)
 {
     validate();

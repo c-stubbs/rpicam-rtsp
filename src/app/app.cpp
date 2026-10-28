@@ -15,7 +15,7 @@ int App::run(int& argc, char *argv[])
 {
     std::signal(SIGINT, signalHandler);
 
-    if (!rpicam_.start())
+    if (config_.rpicam_vid_wrapper_config.run && !rpicam_.start())
     {
         log_.critical("rpicam failed to start");
         return 1;
@@ -23,7 +23,7 @@ int App::run(int& argc, char *argv[])
 
     gst_init(&argc, &argv);
 
-    if (!rtsp_server_.start())
+    if (config_.rtsp_server_config.run && !rtsp_server_.start())
     {
         log_.critical("rtsp server failed to start");
         return 1;
