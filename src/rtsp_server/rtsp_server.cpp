@@ -59,13 +59,20 @@ bool RTSPServer::start()
         return false;
     }
 
-    std::string pipeline =
-        "( udpsrc port=" +
-        std::to_string(config_.udp_port) +
-        " "
-        "caps=\"video/x-h264,stream-format=byte-stream,alignment=nal\" "
-        "! rtph264pay name=pay0 pt=96 config-interval=1 mtu=1200 )";
-
+    std::string pipeline;
+    if (config_.pipeline.empty())
+    {
+        pipeline =
+             "( udpsrc port=" +
+             std::to_string(config_.udp_port) +
+             " "
+             "caps=\"video/x-h264,stream-format=byte-stream,alignment=nal\" "
+             "! rtph264pay name=pay0 pt=96 config-interval=1 mtu=1200 )";
+    }
+    else
+    {
+        pipeline = config_.pipeline;    
+    }
        GstRTSPMediaFactory* factory =
         gst_rtsp_media_factory_new();
 

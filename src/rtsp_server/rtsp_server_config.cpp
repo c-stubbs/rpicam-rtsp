@@ -6,13 +6,17 @@ RtspServerConfig RtspServerConfig::fromToml(const toml::table& config)
     return RtspServerConfig{config["rtsp_server"]["port"].value_or(8554),
                             config["rtsp_server"]["udp_port"].value_or(5000),
                             config["rtsp_server"]["mount_point"].value_or("stream"),
+                            config["rtsp_server"]["pipeline"].value_or(""),
+                            config["rtsp_server"]["run"].value_or(true),
                             config["rtsp_server"]["log_level"].value_or("info")};
 }
 
-RtspServerConfig::RtspServerConfig(int port, int udp_port, std::string mount_point, std::string log_level)
+RtspServerConfig::RtspServerConfig(int port, int udp_port, std::string mount_point, std::string pipeline, bool run, std::string log_level)
     : port(port)
     , udp_port(udp_port)
     , mount_point(mount_point)
+    , pipeline(pipeline)
+    , run(run)
     , log_level(log_level)
 {
     validate();
