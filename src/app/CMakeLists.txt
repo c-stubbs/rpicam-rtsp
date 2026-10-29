@@ -19,7 +19,7 @@ target_link_libraries(app
     rtsp_server
     rpicam_vid_wrapper)
 
-# rtsp server config
+# App Config
 add_library(app_config)
 
 target_sources(app_config
@@ -37,3 +37,16 @@ target_link_libraries(app_config
     tomlplusplus
     rpicam_vid_wrapper_config
     rtsp_server_config)
+
+# CLI Args
+add_library(cli_args)
+
+target_sources(cli_args
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/cli_args.cpp)
+
+target_include_directories(cli_args
+    PUBLIC
+    ${CMAKE_SOURCE_DIR}/include/app
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/external/cxxopts/include)

@@ -4,6 +4,7 @@
 
 #include "logger.h"
 #include "app.h"
+#include "cli_args.h"
 
 std::filesystem::path executable_dir()
 {
@@ -32,6 +33,8 @@ int main(int argc, char *argv[])
         log.critical("Fatal error: config file not found");
         return 1;
     }
+
+    CliArgs cli_args(argc, argv);
 
     AppConfig app_config = AppConfig::fromToml(config_toml);
 

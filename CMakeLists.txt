@@ -44,6 +44,7 @@ target_link_libraries(${PROJECT_NAME}
     app
     logger
     api
+    cli_args
     tomlplusplus)
 
 # Install bins
