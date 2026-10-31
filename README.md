@@ -6,7 +6,7 @@ A lightweight C++ RTSP server for Raspberry Pi cameras using [`rpicam-vid`](http
 
 ## Quickstart
 
-To run `rpicam-rtsp`, grab the `.deb` from ['here'](https://github.com/c-stubbs/rpicam-rtsp/releases), and install it on a Raspberry Pi using apt or dpkg. Once installed, it can be run via `rpicam-rtsp`. Configuration can be done via CLI (options can be viewed via `rpicam-rtsp -h`) or `config.toml` installed at `/etc/rpicam-rtsp/config.toml`.    
+To run `rpicam-rtsp`, grab the `.deb` from [here](https://github.com/c-stubbs/rpicam-rtsp/releases), and install it on a Raspberry Pi using apt or dpkg. Once installed, it can be run via `rpicam-rtsp` in the terminal. Configuration can be done via CLI (options can be viewed via `rpicam-rtsp -h`) or the config file installed at `/etc/rpicam-rtsp/config.toml`.    
 
 ## Overview
 
