@@ -4,6 +4,10 @@ A lightweight C++ RTSP server for Raspberry Pi cameras using [`rpicam-vid`](http
 
 `rpicam-rtsp` wraps `rpicam-vid` and exposes its H.264 output as an RTSP stream, providing a simple way to get a Raspberry Pi camera onto an IP network without requiring `rpicam-vid` to implement RTSP itself.
 
+## Quickstart
+
+To run `rpicam-rtsp`, grab the `.deb` from ['here'](https://github.com/c-stubbs/rpicam-rtsp/releases), and install it on a Raspberry Pi using apt or dpkg. Once installed, it can be run via `rpicam-rtsp`. Configuration can be done via CLI (options can be viewed via `rpicam-rtsp -h`) or `config.toml` installed at `/etc/rpicam-rtsp/config.toml`.    
+
 ## Overview
 
 The project uses `rpicam-vid` to capture and encode video, sends the encoded H.264 stream over a local UDP socket, and uses GStreamer to package that stream into RTSP.
@@ -18,7 +22,7 @@ The project uses `rpicam-vid` to capture and encode video, sends the encoded H.2
 │ rpicam-vid       │
 │  H.264 encode    │
 │     │            │
-│     │ UDP         │
+│     │ UDP        │
 │     ▼            │
 │ GStreamer        │
 │ RTSP Server      │
@@ -142,7 +146,7 @@ Run the cross-compilation build:
 The resulting deb file is located at:
 
 ```text
-xbuild/rpicam-rtsp_0.0.1_arm64.deb
+xbuild/rpicam-rtsp_1.1.0_arm64.deb
 ```
 
 #### 6. Copy the debfile to the Raspberry Pi
@@ -150,7 +154,7 @@ xbuild/rpicam-rtsp_0.0.1_arm64.deb
 Copy the .deb to the Raspberry Pi:
 
 ```bash
-scp xbuild/rpicam-rtsp_0.0.1_arm64.deb <user>@<raspberry-pi>:~/.
+scp xbuild/rpicam-rtsp_1.1.0_arm64.deb <user>@<raspberry-pi>:~/.
 ```
 
 The executable can then be run on the Raspberry Pi.
@@ -159,15 +163,23 @@ The executable can then be run on the Raspberry Pi.
 
 ```bash
 ssh <user>@<raspberry-pi>
-sudo apt install -y ./rpicam-rtsp_0.0.1_arm64.deb
+sudo apt install -y ./rpicam-rtsp_1.1.0_arm64.deb
 ```
 
 ## Usage
 
 Start the RTSP server:
 
+If built from source locally, 
+
 ```bash
 ./install/bin/rpicam-rtsp
+```
+
+If installed via apt (either from a release, or from a locally built .deb)
+
+```bash
+rpicam-rtsp
 ```
 
 By default, the server exposes the camera stream at:
