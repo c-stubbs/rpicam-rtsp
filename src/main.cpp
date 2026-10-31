@@ -34,9 +34,25 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    CliArgs cli_args(argc, argv);
+
+    CliArgs cli_args;
+
+    try {
+        cli_args.parse(argc, argv);
+    }
+    catch (const cxxopts::exceptions::exception& e)
+    {
+        log.critical("Fatal error: {}", e.what());
+        log.critical("Use --help for usage information");
+        return 1;
+    }
+    
+    if (cli_args.hasHelp())
+        return 0;
 
     AppConfig app_config = AppConfig::fromToml(config_toml);
+
+    cli_args.applyOverridesTo(app_config);
 
     try {
         App app(app_config);

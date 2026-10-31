@@ -48,5 +48,10 @@ target_sources(cli_args
 target_include_directories(cli_args
     PUBLIC
     ${CMAKE_SOURCE_DIR}/include/app
-    PRIVATE
     ${CMAKE_SOURCE_DIR}/external/cxxopts/include)
+
+target_link_libraries(cli_args
+    PRIVATE
+    logger
+    PUBLIC
+    app_config)
