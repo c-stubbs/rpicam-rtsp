@@ -9,6 +9,7 @@ void CliArgs::parse(int& argc, char *argv[])
 
     help_.addTo(options);
 
+    config_.addTo(options);
     log_level_.addTo(options);
     rtsp_port_.addTo(options);
     udp_port_.addTo(options);
@@ -28,6 +29,7 @@ void CliArgs::parse(int& argc, char *argv[])
     if (help_.value)
         std::cout << options.help() << std::endl; 
 
+    config_.getFrom(result);
     log_level_.getFrom(result);
     rtsp_port_.getFrom(result);
     udp_port_.getFrom(result);
@@ -44,6 +46,11 @@ void CliArgs::parse(int& argc, char *argv[])
 bool CliArgs::hasHelp() const
 {
     return help_.value.has_value();
+}
+
+std::optional<std::string> CliArgs::configPath() const
+{
+    return config_.value;
 }
 
 void CliArgs::applyOverridesTo(AppConfig& app_config) const

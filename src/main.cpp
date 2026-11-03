@@ -15,26 +15,6 @@ int main(int argc, char *argv[])
 {
     Logger log("main", "trace");
 
-    std::filesystem::path sys_config_path{"/etc/rpicam-rtsp/config.toml"};
-    std::filesystem::path local_config_path = executable_dir().parent_path() / "etc" / "rpicam-rtsp" / "config.toml";
-
-    toml::table config_toml;
-
-    if (std::filesystem::exists(sys_config_path))
-    {
-        config_toml = toml::parse_file(sys_config_path.string());
-    }
-    else if (std::filesystem::exists(local_config_path))
-    {
-        config_toml = toml::parse_file(local_config_path.string());
-    }
-    else
-    {
-        log.critical("Fatal error: config file not found");
-        return 1;
-    }
-
-
     CliArgs cli_args;
 
     try {
@@ -49,6 +29,34 @@ int main(int argc, char *argv[])
     
     if (cli_args.hasHelp())
         return 0;
+    
+    toml::table config_toml;
+
+    if (auto config_path_string = cli_args.configPath()) {
+        std::filesystem::path config_path(*config_path_string);
+            
+        if (std::filesystem::exists(config_path)) {
+            config_toml = toml::parse_file(config_path.string());
+        }
+        else {
+            log.critical("Fatal error: config file not found");
+        }
+    }
+    else {
+        std::filesystem::path sys_config_path{"/etc/rpicam-rtsp/config.toml"};
+        std::filesystem::path local_config_path = executable_dir().parent_path() / "etc" / "rpicam-rtsp" / "config.toml";
+
+        if (std::filesystem::exists(sys_config_path)) {
+            config_toml = toml::parse_file(sys_config_path.string());
+        }
+        else if (std::filesystem::exists(local_config_path)) {
+            config_toml = toml::parse_file(local_config_path.string());
+        }
+        else {
+            log.critical("Fatal error: config file not found");
+            return 1;
+        }
+    }
 
     AppConfig app_config = AppConfig::fromToml(config_toml);
 

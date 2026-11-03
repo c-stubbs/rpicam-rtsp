@@ -14,6 +14,8 @@ class CliArgs {
         
         bool hasHelp() const;
 
+        std::optional<std::string> configPath() const;
+
     private:
 
         template <typename T>
@@ -43,6 +45,7 @@ class CliArgs {
             }
         };
 
+        Option<std::string> config_{"config", "Path to the config file to use"};
         Option<std::string> log_level_{"log-level", "Options: trace, debug, info, warning, error, critical"};
 
         Option<int> rtsp_port_{"rtsp-port","Port for the RTSP server"};
