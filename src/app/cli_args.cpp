@@ -9,14 +9,12 @@ void CliArgs::parse(int& argc, char *argv[])
 
     help_.addTo(options);
 
-    app_log_level_.addTo(options);
-    rtsp_server_log_level_.addTo(options);
+    log_level_.addTo(options);
     rtsp_port_.addTo(options);
     udp_port_.addTo(options);
     mount_point_.addTo(options);
     pipeline_.addTo(options);
     run_rtsp_server_.addTo(options);
-    rpicam_vid_log_level_.addTo(options);
     video_width_.addTo(options);
     video_height_.addTo(options);
     framerate_.addTo(options);
@@ -30,14 +28,12 @@ void CliArgs::parse(int& argc, char *argv[])
     if (help_.value)
         std::cout << options.help() << std::endl; 
 
-    app_log_level_.getFrom(result);
-    rtsp_server_log_level_.getFrom(result);
+    log_level_.getFrom(result);
     rtsp_port_.getFrom(result);
     udp_port_.getFrom(result);
     mount_point_.getFrom(result);
     pipeline_.getFrom(result);
     run_rtsp_server_.getFrom(result);
-    rpicam_vid_log_level_.getFrom(result);
     video_width_.getFrom(result);
     video_height_.getFrom(result);
     framerate_.getFrom(result);
@@ -52,11 +48,12 @@ bool CliArgs::hasHelp() const
 
 void CliArgs::applyOverridesTo(AppConfig& app_config) const
 {
-    if (app_log_level_.value)
-        app_config.log_level = *(app_log_level_.value);
-
-    if (rtsp_server_log_level_.value)
-        app_config.rtsp_server_config.log_level = *(rtsp_server_log_level_.value);
+    if (log_level_.value)
+    {
+        app_config.log_level = *(log_level_.value);
+        app_config.rtsp_server_config.log_level = *(log_level_.value);
+        app_config.rpicam_vid_wrapper_config.log_level = *(log_level_.value);
+    }
 
     if (rtsp_port_.value)
         app_config.rtsp_server_config.port = *(rtsp_port_.value);
@@ -75,9 +72,6 @@ void CliArgs::applyOverridesTo(AppConfig& app_config) const
 
     if (run_rtsp_server_.value)
         app_config.rtsp_server_config.run = *(run_rtsp_server_.value);
-
-    if (rpicam_vid_log_level_.value)
-        app_config.rpicam_vid_wrapper_config.log_level = *(rpicam_vid_log_level_.value);
 
     if (video_width_.value)
         app_config.rpicam_vid_wrapper_config.width = *(video_width_.value);

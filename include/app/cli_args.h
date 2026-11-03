@@ -43,16 +43,14 @@ class CliArgs {
             }
         };
 
-        Option<std::string> app_log_level_{"log-level", "Default log level"};
+        Option<std::string> log_level_{"log-level", "Options: trace, debug, info, warning, error, critical"};
 
-        Option<std::string> rtsp_server_log_level_{"rtsp-log-level", "Log level of RTSP specific behavior"};
         Option<int> rtsp_port_{"rtsp-port","Port for the RTSP server"};
         Option<int> udp_port_{"udp-port", "Port used to bridge rpicam-vid to the RTSP server"};
         Option<std::string> mount_point_{"mount-point","Mount point of the RTSP stream e.g., /stream"};
         Option<std::string> pipeline_{"pipeline", "Overrides the pipeline used by the RTSP server"};
         Option<bool> run_rtsp_server_{"run-rtsp", "Enable the RTSP server"};
 
-        Option<std::string> rpicam_vid_log_level_{"rpicam-vid-log-level", "Log level of rpicam-vid specific behavior"};
         Option<int> video_width_{"width", "Width of the video stream"};
         Option<int> video_height_{"height", "Height of the video stream"};
         Option<int> framerate_{"fps", "Target framerate of the video stream"};
