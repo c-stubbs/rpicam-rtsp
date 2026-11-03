@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     toml::table config_toml;
 
     if (auto config_path_string = cli_args.configPath()) {
-        std::filesystem::path config_path(*config_path_string);
+        const auto config_path = std::filesystem::absolute(*config_path_string);
             
         if (std::filesystem::exists(config_path)) {
             config_toml = toml::parse_file(config_path.string());
