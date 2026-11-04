@@ -191,7 +191,7 @@ rtsp://<raspberry-pi-ip>:8554/stream
 For example:
 
 ```bash
-ffplay rtsp://192.168.1.2.0:8554/stream
+ffplay rtsp://192.168.1.100:8554/stream
 ```
 
 You can also open the URL in VLC or use it as an input to another video-processing application.
