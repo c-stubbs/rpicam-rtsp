@@ -146,7 +146,7 @@ Run the cross-compilation build:
 The resulting deb file is located at:
 
 ```text
-xbuild/rpicam-rtsp_1.1.0_arm64.deb
+xbuild/rpicam-rtsp_1.2.0_arm64.deb
 ```
 
 #### 6. Copy the debfile to the Raspberry Pi
