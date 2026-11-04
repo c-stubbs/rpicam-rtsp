@@ -4,6 +4,7 @@
 
 #include "logger.h"
 #include "app.h"
+#include "cli_args.h"
 
 std::filesystem::path executable_dir()
 {
@@ -14,26 +15,52 @@ int main(int argc, char *argv[])
 {
     Logger log("main", "trace");
 
-    std::filesystem::path sys_config_path{"/etc/rpicam-rtsp/config.toml"};
-    std::filesystem::path local_config_path = executable_dir().parent_path() / "etc" / "rpicam-rtsp" / "config.toml";
+    CliArgs cli_args;
 
+    try {
+        cli_args.parse(argc, argv);
+    }
+    catch (const cxxopts::exceptions::exception& e)
+    {
+        log.critical("Fatal error: {}", e.what());
+        log.critical("Use --help for usage information");
+        return 1;
+    }
+    
+    if (cli_args.hasHelp())
+        return 0;
+    
     toml::table config_toml;
 
-    if (std::filesystem::exists(sys_config_path))
-    {
-        config_toml = toml::parse_file(sys_config_path.string());
+    if (auto config_path_string = cli_args.configPath()) {
+        const auto config_path = std::filesystem::absolute(*config_path_string);
+            
+        if (std::filesystem::exists(config_path)) {
+            config_toml = toml::parse_file(config_path.string());
+        }
+        else {
+            log.critical("Fatal error: config file not found");
+        }
     }
-    else if (std::filesystem::exists(local_config_path))
-    {
-        config_toml = toml::parse_file(local_config_path.string());
-    }
-    else
-    {
-        log.critical("Fatal error: config file not found");
-        return 1;
+    else {
+        std::filesystem::path sys_config_path{"/etc/rpicam-rtsp/config.toml"};
+        std::filesystem::path local_config_path = executable_dir().parent_path() / "etc" / "rpicam-rtsp" / "config.toml";
+
+        if (std::filesystem::exists(sys_config_path)) {
+            config_toml = toml::parse_file(sys_config_path.string());
+        }
+        else if (std::filesystem::exists(local_config_path)) {
+            config_toml = toml::parse_file(local_config_path.string());
+        }
+        else {
+            log.critical("Fatal error: config file not found");
+            return 1;
+        }
     }
 
     AppConfig app_config = AppConfig::fromToml(config_toml);
+
+    cli_args.applyOverridesTo(app_config);
 
     try {
         App app(app_config);
