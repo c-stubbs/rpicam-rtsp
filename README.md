@@ -154,7 +154,7 @@ xbuild/rpicam-rtsp_1.2.0_arm64.deb
 Copy the .deb to the Raspberry Pi:
 
 ```bash
-scp xbuild/rpicam-rtsp_1.1.0_arm64.deb <user>@<raspberry-pi>:~/.
+scp xbuild/rpicam-rtsp_1.2.0_arm64.deb <user>@<raspberry-pi>:~/.
 ```
 
 The executable can then be run on the Raspberry Pi.
@@ -163,7 +163,7 @@ The executable can then be run on the Raspberry Pi.
 
 ```bash
 ssh <user>@<raspberry-pi>
-sudo apt install -y ./rpicam-rtsp_1.1.0_arm64.deb
+sudo apt install -y ./rpicam-rtsp_1.2.0_arm64.deb
 ```
 
 ## Usage
@@ -191,7 +191,7 @@ rtsp://<raspberry-pi-ip>:8554/stream
 For example:
 
 ```bash
-ffplay rtsp://192.168.1.100:8554/stream
+ffplay rtsp://192.168.1.2.0:8554/stream
 ```
 
 You can also open the URL in VLC or use it as an input to another video-processing application.
