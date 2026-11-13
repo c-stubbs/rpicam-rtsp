@@ -1,8 +1,11 @@
 #include "api.h"
 
-Api::Api(const ApiConfig& config)
+#include "app.h"
+
+Api::Api(const ApiConfig& config, App& app)
     : config_(config)
     , log_("api", config.log_level)
+    , app_(app)
 {
 }
 

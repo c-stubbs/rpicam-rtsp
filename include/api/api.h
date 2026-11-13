@@ -6,10 +6,13 @@
 #include "api_config.h"
 #include "logger.h"
 
+// Forward declare App to break circular dependency
+class App;
+
 class Api {
 
     public:
-        Api(const ApiConfig& config);
+        Api(const ApiConfig& config, App& app);
         ~Api();
 
         bool start();
@@ -22,6 +25,7 @@ class Api {
 
         const ApiConfig config_;
         Logger log_;
+        App& app_;
 
         void onGetTest(const httplib::Request& req, httplib::Response& res);
 

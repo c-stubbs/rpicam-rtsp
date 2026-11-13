@@ -8,7 +8,7 @@ App::App(const AppConfig& config)
     , log_("app", config.log_level)
     , rpicam_(config.rpicam_vid_wrapper_config)
     , rtsp_server_(config.rtsp_server_config)
-    , api_(config.api_config)
+    , api_(config.api_config, *this)
 {
 }
 
