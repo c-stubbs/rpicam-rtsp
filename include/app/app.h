@@ -13,6 +13,8 @@ class App {
     public:
         App(const AppConfig& config); 
         int run(int& argc, char *argv[]);
+
+        RpiCamVidWrapperConfig getCameraConfig() const;
     
     private:
         static void signalHandler(int signal);

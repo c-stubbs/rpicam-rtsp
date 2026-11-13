@@ -53,6 +53,11 @@ int App::run(int& argc, char *argv[])
     return 0;
 }
 
+RpiCamVidWrapperConfig App::getCameraConfig() const
+{
+    return config_.rpicam_vid_wrapper_config;
+}
+
 void App::signalHandler(int signal)
 {
     if (signal == SIGINT)

@@ -2,12 +2,12 @@
 
 #include <thread>
 
-#include "httplib.h"
 #include "api_config.h"
 #include "logger.h"
+#include "httplib.h"
 
-// Forward declare App to break circular dependency
-class App;
+
+class App; 
 
 class Api {
 
@@ -27,6 +27,7 @@ class Api {
         Logger log_;
         App& app_;
 
-        void onGetTest(const httplib::Request& req, httplib::Response& res);
+        void onGetMarco(const httplib::Request& req, httplib::Response& res);
+        void onGetCameraConfig(const httplib::Request& req, httplib::Response& res);
 
 };

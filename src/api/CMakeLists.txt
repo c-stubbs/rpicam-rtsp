@@ -8,7 +8,9 @@ target_sources(api
 target_include_directories(api
     PUBLIC
     ${CMAKE_SOURCE_DIR}/include/api
-    ${CMAKE_SOURCE_DIR}/external/cpp-httplib)
+    ${CMAKE_SOURCE_DIR}/external/cpp-httplib
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/external/nlohmann-json/include)
 
 target_link_libraries(api
     PUBLIC
