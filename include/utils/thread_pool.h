@@ -6,10 +6,12 @@
 #include <vector>
 #include <thread>
 
+#include "logger.h"
+
 class ThreadPool {
 
     public:
-        ThreadPool(const size_t& num_threads);
+        ThreadPool(const size_t& num_threads, Logger& logger);
         ~ThreadPool();
 
         void queue(std::function<void()> work);
@@ -19,5 +21,6 @@ class ThreadPool {
         std::condition_variable cv_;
         std::queue<std::function<void()>> queue_;
         std::mutex queue_mutex_;
+        Logger& log_;
 
 };

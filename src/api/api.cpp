@@ -20,6 +20,8 @@ Api::~Api()
 
 bool Api::start()
 {
+    log_.trace("start() called");
+
     server.Get("/api/v1/marco", 
                [this](const httplib::Request& req, httplib::Response& res)
                {
@@ -67,6 +69,8 @@ bool Api::start()
 
 void Api::stop()
 {
+    log_.trace("stop() called");
+
     server.stop();
  
     if (server_thread_.joinable())
@@ -79,23 +83,29 @@ void Api::stop()
 
 void Api::onGetMarco(const httplib::Request& req, httplib::Response& res)
 {
+    log_.trace("onGetMarco() called");
+
     res.set_content("Polo!", "text/plain");
 }
 
 void Api::onGetCameraConfig(const httplib::Request& req, httplib::Response& res)
 {
-  auto camera_config = app_.getConfig().rpicam_vid_wrapper_config;
+    log_.trace("onGetCameraConfig() called");
 
-  Models::CameraConfig config;
-  config.height = camera_config.height;
-  config.width = camera_config.width;
-  config.fps = camera_config.framerate;
+    auto camera_config = app_.getConfig().rpicam_vid_wrapper_config;
 
-  res.set_content(config.dump(), "application/json");
+    Models::CameraConfig config;
+    config.height = camera_config.height;
+    config.width = camera_config.width;
+    config.fps = camera_config.framerate;
+
+    res.set_content(config.dump(), "application/json");
 }
 
 void Api::onPatchCameraConfig(const httplib::Request& req, httplib::Response& res)
 {
+    log_.trace("onPatchCameraConfig() called");
+
     auto app_config = app_.getConfig();
     Models::CameraConfigUpdate camera_config_model;
     
@@ -103,8 +113,12 @@ void Api::onPatchCameraConfig(const httplib::Request& req, httplib::Response& re
         auto json = nlohmann::json::parse(req.body);
         camera_config_model = Models::CameraConfigUpdate::fromJson(json);
 
+        log_.debug("received camera configuration: {}", json.dump());
+
     } catch (nlohmann::json::exception& e)
     {
+        log_.error("received invalid camera configuration: {}", e.what());
+
         res.status = httplib::StatusCode::BadRequest_400;
         res.set_content(R"({"error":{"code":"INVALID_JSON","message":"Invalid camera configuration."}})", "application/json");
         return;
@@ -121,12 +135,16 @@ void Api::onPatchCameraConfig(const httplib::Request& req, httplib::Response& re
         app_config.rpicam_vid_wrapper_config.framerate = *(camera_config_model.fps);
     
     app_.setConfig(app_config);
-    
+   
+    // TODO: could make it return the camera config as a confirmation
+
     res.status = httplib::StatusCode::OK_200;
 }
 
 void Api::onPostCameraStart(const httplib::Request& req, httplib::Response& res)
 {
+    log_.trace("onPostCameraStart() called");
+
     auto task = [this](){
         app_.startRpiCamVid();
     };
@@ -138,6 +156,8 @@ void Api::onPostCameraStart(const httplib::Request& req, httplib::Response& res)
 
 void Api::onPostCameraStop(const httplib::Request& req, httplib::Response& res)
 {
+    log_.trace("onPostCameraStop() called");
+
     auto task = [this](){
         app_.stopRpiCamVid();
     };
@@ -150,6 +170,8 @@ void Api::onPostCameraStop(const httplib::Request& req, httplib::Response& res)
 void Api::onPostCameraRestart(const httplib::Request& req, httplib::Response& res)
 {
     // TODO: need some way to prevent multiple lifecycle actions from piling in the worker
+
+    log_.trace("onPostCameraRestart() called");
 
     auto task = [this](){
         app_.stopRpiCamVid();
