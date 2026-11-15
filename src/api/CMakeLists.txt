@@ -17,7 +17,8 @@ target_link_libraries(api
     api_config
     app
     PRIVATE
-    logger)
+    logger
+    utils)
 
 # rpicam-vid wrapper config
 add_library(api_config)

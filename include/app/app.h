@@ -7,6 +7,7 @@
 #include "api.h"
 #include "logger.h"
 #include "app_config.h"
+#include "thread_pool.h"
 
 class App {
 
@@ -14,15 +15,37 @@ class App {
         App(const AppConfig& config); 
         int run(int& argc, char *argv[]);
 
-        RpiCamVidWrapperConfig getCameraConfig() const;
+        AppConfig getConfig() const;
+        void setConfig(AppConfig config);
+        void writeConfig();
+        void stop();
+        
+        void startRpiCamVid();
+        void stopRpiCamVid();
+
+        // RTSP Server API
+        /**
+         * RtspServerConfig getRtspServerConfig() const; // get the rtsp server config
+         * void setRtspServerConfig(); // update the rtsp server config (not permanent)
+         * void startRtspServer(); // start the rtsp server
+         * void stopRtspServer(); // stop the rtsp server
+         */
     
+        // App API
+        /**
+         * void saveConfig(); // write the current config to file
+         * void stop(); // stop the app, let systemd restart it
+         */
+
     private:
         static void signalHandler(int signal);
         inline static std::atomic<bool> running{true};
         
+        ThreadPool thread_pool_;
         RpiCamVidWrapper rpicam_;
         RTSPServer rtsp_server_;
         Api api_;
         Logger log_;
-        const AppConfig config_;
+        AppConfig config_;
+
 };

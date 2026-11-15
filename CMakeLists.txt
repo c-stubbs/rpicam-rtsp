@@ -32,6 +32,7 @@ add_subdirectory(src/rpicam_vid_wrapper)
 add_subdirectory(src/rtsp_server)
 add_subdirectory(src/app)
 add_subdirectory(src/api)
+add_subdirectory(src/utils)
 
 # Add main executable
 add_executable(${PROJECT_NAME} 
@@ -44,6 +45,7 @@ target_link_libraries(${PROJECT_NAME}
     app
     logger
     api
+    utils
     cli_args
     tomlplusplus)
 

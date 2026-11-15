@@ -17,13 +17,17 @@ RpiCamVidWrapper::~RpiCamVidWrapper()
     stop();
 }
 
-std::optional<pid_t> RpiCamVidWrapper::start()
+std::optional<pid_t> RpiCamVidWrapper::start(const std::optional<RpiCamVidWrapperConfig>& config)
 {
     // If pid_ is already valid, the stream is already open 
     if (isRunning())
     {
         return pid_;
     }
+
+    // If a config is provided, update the classes config
+    if (config)
+        config_ = *config;
 
     pid_t pid = fork();
     
@@ -157,6 +161,8 @@ void RpiCamVidWrapper::stop()
     }
 
     pid_.reset();
+
+    log_.info("stopped");
 }
 
 bool RpiCamVidWrapper::isRunning()

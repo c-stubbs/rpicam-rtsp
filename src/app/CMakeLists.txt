@@ -18,6 +18,7 @@ target_link_libraries(app
     logger
     rtsp_server
     rpicam_vid_wrapper
+    utils
     api)
 
 # App Config

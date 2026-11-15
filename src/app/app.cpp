@@ -3,12 +3,15 @@
 #include <thread>
 #include <csignal>
 
+#include <toml++/toml.hpp>
+
 App::App(const AppConfig& config)
     : config_(config)
     , log_("app", config.log_level)
+    , thread_pool_(1)
     , rpicam_(config.rpicam_vid_wrapper_config)
     , rtsp_server_(config.rtsp_server_config)
-    , api_(config.api_config, *this)
+    , api_(config.api_config, *this, thread_pool_)
 {
 }
 
@@ -53,9 +56,37 @@ int App::run(int& argc, char *argv[])
     return 0;
 }
 
-RpiCamVidWrapperConfig App::getCameraConfig() const
+AppConfig App::getConfig() const
 {
-    return config_.rpicam_vid_wrapper_config;
+    return config_;
+}
+
+void App::setConfig(AppConfig config)
+{
+    config_ = config;
+}
+
+void App::writeConfig()
+{
+    // TODO: want this to read in the current file to a toml,
+    // compare it to the active toml, prune all differences,
+    // and only write the remaining. Would also like it to
+    // retain comments
+}
+
+void App::stop()
+{
+    running = false;
+}
+
+void App::startRpiCamVid()
+{ 
+    rpicam_.start(config_.rpicam_vid_wrapper_config);
+}
+
+void App::stopRpiCamVid()
+{
+    rpicam_.stop();
 }
 
 void App::signalHandler(int signal)

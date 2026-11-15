@@ -12,13 +12,13 @@ class RpiCamVidWrapper {
         RpiCamVidWrapper(const RpiCamVidWrapperConfig& config);
         ~RpiCamVidWrapper();
 
-        std::optional<pid_t> start();
+        std::optional<pid_t> start(const std::optional<RpiCamVidWrapperConfig>& config = std::nullopt);
         void stop();
         bool isRunning();
 
     private:
         std::optional<pid_t> pid_;
         Logger log_;
-        const RpiCamVidWrapperConfig config_;
+        RpiCamVidWrapperConfig config_;
         
 };

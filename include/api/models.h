@@ -30,6 +30,21 @@ namespace Models {
     };
 
     struct CameraConfigUpdate {
+
+        // nlohmann doesn't seem to handle optionals how I want so DIY
+        static CameraConfigUpdate fromJson(const nlohmann::json& json)
+        {
+            CameraConfigUpdate config;
+            if (json.contains("width"))
+                config.width = json.at("width").get<std::uint16_t>();
+            if (json.contains("height"))
+                config.height = json.at("height").get<std::uint16_t>();
+            if (json.contains("fps"))
+                config.fps = json.at("fps").get<std::uint8_t>();
+
+            return config;
+        };
+
         std::optional<uint16_t> width;
         std::optional<uint16_t> height;
         std::optional<uint8_t> fps;
