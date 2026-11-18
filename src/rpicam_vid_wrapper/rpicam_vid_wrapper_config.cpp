@@ -2,7 +2,8 @@
 #include <stdexcept>
 #include <array> 
 #include <algorithm>
-#include <sstream>
+
+#include "string_utils.h"
 
 RpiCamVidWrapperConfig RpiCamVidWrapperConfig::fromToml(const toml::table& config)
 {
@@ -11,24 +12,9 @@ RpiCamVidWrapperConfig RpiCamVidWrapperConfig::fromToml(const toml::table& confi
                                   config["rpicam_vid"]["framerate"].value_or(15),
                                   config["rpicam_vid"]["bitrate"].value_or(1000000),
                                   config["rpicam_vid"]["port"].value_or(5000),
-                                  splitString(config["rpicam_vid"]["raw_args"].value_or(""), ' '),
+                                  StringUtils::splitString(config["rpicam_vid"]["raw_args"].value_or(""), ' '),
                                   config["rpicam_vid"]["run"].value_or(true),
                                   config["rpicam_vid"]["log_level"].value_or("info")};
-}
-
-std::vector<std::string> RpiCamVidWrapperConfig::splitString(const std::string& input, const char& delim)
-{
-    std::vector<std::string> result;
-    std::string item;
-
-    std::stringstream ss(input);
-    
-    while (std::getline(ss, item, delim))
-    {
-        result.push_back(item);
-    }
-
-    return result;
 }
 
 RpiCamVidWrapperConfig::RpiCamVidWrapperConfig(int width, int height, int framerate, int bitrate, int port, std::vector<std::string> raw_args, bool run, std::string log_level) :

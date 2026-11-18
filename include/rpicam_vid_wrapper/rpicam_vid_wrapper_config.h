@@ -21,7 +21,6 @@ class RpiCamVidWrapperConfig {
         void validate() const;
 
     private:
-        static std::vector<std::string> splitString(const std::string& input, const char& delim);
 
         void validateResolution() const;
         void validateFramerate() const;

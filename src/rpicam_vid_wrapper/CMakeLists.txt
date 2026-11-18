@@ -30,4 +30,5 @@ target_link_libraries(rpicam_vid_wrapper_config
     PRIVATE
     logger
     PUBLIC
-    tomlplusplus)
+    tomlplusplus
+    utils)

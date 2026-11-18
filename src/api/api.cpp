@@ -4,6 +4,7 @@
 #include "httplib.h"
 #include "models.h"
 #include "thread_pool.h"
+#include "string_utils.h"
 
 Api::Api(const ApiConfig& config, App& app, ThreadPool& thread_pool)
     : config_(config)
@@ -97,7 +98,11 @@ void Api::onGetCameraConfig(const httplib::Request& req, httplib::Response& res)
     Models::CameraConfig config;
     config.height = camera_config.height;
     config.width = camera_config.width;
-    config.fps = camera_config.framerate;
+    config.framerate = camera_config.framerate;
+    config.bitrate = camera_config.bitrate;
+    config.port = camera_config.port;
+    config.log_level = camera_config.log_level;
+    config.raw_args = StringUtils::vectorToString(camera_config.raw_args);
 
     res.set_content(config.dump(), "application/json");
 }
@@ -131,13 +136,23 @@ void Api::onPatchCameraConfig(const httplib::Request& req, httplib::Response& re
     if (camera_config_model.width)
         app_config.rpicam_vid_wrapper_config.width = *(camera_config_model.width);
     
-    if (camera_config_model.fps)
-        app_config.rpicam_vid_wrapper_config.framerate = *(camera_config_model.fps);
+    if (camera_config_model.framerate)
+        app_config.rpicam_vid_wrapper_config.framerate = *(camera_config_model.framerate);
+
+    if (camera_config_model.bitrate)
+        app_config.rpicam_vid_wrapper_config.bitrate = *(camera_config_model.bitrate);
+
+    if (camera_config_model.port)
+        app_config.rpicam_vid_wrapper_config.port = *(camera_config_model.port);
+
+    if (camera_config_model.log_level)
+        app_config.rpicam_vid_wrapper_config.log_level = *(camera_config_model.log_level);
+
+    if (camera_config_model.raw_args)
+        app_config.rpicam_vid_wrapper_config.raw_args = StringUtils::splitString(*(camera_config_model.raw_args), ' ');
     
     app_.setConfig(app_config);
    
-    // TODO: could make it return the camera config as a confirmation
-
     res.status = httplib::StatusCode::OK_200;
 }
 

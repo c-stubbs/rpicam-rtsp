@@ -3,7 +3,8 @@ add_library(utils)
 
 target_sources(utils
     PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/thread_pool.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/thread_pool.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/string_utils.cpp)
 
 target_include_directories(utils
     PUBLIC
