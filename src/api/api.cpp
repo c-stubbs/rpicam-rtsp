@@ -65,6 +65,30 @@ bool Api::start()
                     this->onGetRtspConfig(req, res);
                 });
 
+    server.Patch("/api/v1/rtsp/config", 
+                [this](const httplib::Request& req, httplib::Response& res)
+                {
+                    this->onPatchRtspConfig(req, res);
+                });
+    
+    server.Post("/api/v1/rtsp/start", 
+                [this](const httplib::Request& req, httplib::Response& res)
+                {
+                    this->onPostRtspStart(req, res);
+                });
+   
+    server.Post("/api/v1/rtsp/stop", 
+                [this](const httplib::Request& req, httplib::Response& res)
+                {
+                    this->onPostRtspStop(req, res);
+                });
+
+    server.Post("/api/v1/rtsp/restart", 
+                [this](const httplib::Request& req, httplib::Response& res)
+                {
+                    this->onPostRtspRestart(req, res);
+                });
+
     server_thread_ = std::jthread([this](){
         server.listen("0.0.0.0", 8080);
     });
