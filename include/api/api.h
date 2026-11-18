@@ -35,4 +35,10 @@ class Api {
         void onPostCameraStart(const httplib::Request& req, httplib::Response& res);
         void onPostCameraStop(const httplib::Request& req, httplib::Response& res);
         void onPostCameraRestart(const httplib::Request& req, httplib::Response& res);
+
+        void onGetRtspConfig(const httplib::Request& req, httplib::Response& res);
+        void onPatchRtspConfig(const httplib::Request& req, httplib::Response& res);
+        void onPostRtspStart(const httplib::Request& req, httplib::Response& res);
+        void onPostRtspStop(const httplib::Request& req, httplib::Response& res);
+        void onPostRtspRestart(const httplib::Request& req, httplib::Response& res);
 };

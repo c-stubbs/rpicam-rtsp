@@ -59,6 +59,12 @@ bool Api::start()
                     this->onPostCameraRestart(req, res);
                 });
 
+    server.Get("/api/v1/rtsp/config",
+                [this](const httplib::Request& req, httplib::Response& res)
+                {
+                    this->onGetRtspConfig(req, res);
+                });
+
     server_thread_ = std::jthread([this](){
         server.listen("0.0.0.0", 8080);
     });
@@ -191,6 +197,67 @@ void Api::onPostCameraRestart(const httplib::Request& req, httplib::Response& re
     auto task = [this](){
         app_.stopRpiCamVid();
         app_.startRpiCamVid();
+    };
+
+    thread_pool_.queue(std::move(task));
+
+    res.status = httplib::StatusCode::Accepted_202;
+}
+
+void Api::onGetRtspConfig(const httplib::Request& req, httplib::Response& res)
+{
+    log_.trace("onGetRtspConfig() called");
+
+    auto rtsp_config = app_.getConfig().rtsp_server_config;
+
+    Models::RtspConfig config;
+    config.port = rtsp_config.port;
+    config.udp_port = rtsp_config.udp_port;
+    config.mount_point = rtsp_config.mount_point;
+    config.pipeline = rtsp_config.pipeline;
+    config.log_level = rtsp_config.log_level;
+
+    res.set_content(config.dump(), "application/json");
+}
+
+void Api::onPatchRtspConfig(const httplib::Request& req, httplib::Response& res)
+{
+    // TODO
+}
+
+void Api::onPostRtspStart(const httplib::Request& req, httplib::Response& res)
+{
+    log_.trace("onPostRtspStart() called");
+
+    auto task = [this](){
+        app_.startRtspServer();
+    };
+
+    thread_pool_.queue(std::move(task));
+
+    res.status = httplib::StatusCode::Accepted_202;
+}
+
+void Api::onPostRtspStop(const httplib::Request& req, httplib::Response& res)
+{
+    log_.trace("onPostRtspStop() called");
+
+    auto task = [this](){
+        app_.stopRtspServer();
+    };
+
+    thread_pool_.queue(std::move(task));
+
+    res.status = httplib::StatusCode::Accepted_202;
+}
+
+void Api::onPostRtspRestart(const httplib::Request& req, httplib::Response& res)
+{
+    log_.trace("onPostRtspRestart() called");
+
+    auto task = [this](){
+        app_.stopRtspServer();
+        app_.startRtspServer();
     };
 
     thread_pool_.queue(std::move(task));

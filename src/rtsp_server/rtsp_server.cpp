@@ -11,12 +11,15 @@ RTSPServer::~RTSPServer()
     stop();
 }
 
-bool RTSPServer::start()
+bool RTSPServer::start(const std::optional<RtspServerConfig>& config)
 {
     if (isRunning())
     {
         return false;
     }
+
+    if (config)
+        config_ = *config;
 
     loop_ = g_main_loop_new(nullptr, FALSE);
 

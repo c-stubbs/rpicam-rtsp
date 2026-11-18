@@ -28,6 +28,13 @@ namespace Models {
     };
 
     struct CameraConfigUpdate {
+        std::optional<uint16_t> width;
+        std::optional<uint16_t> height;
+        std::optional<uint8_t> framerate;
+        std::optional<uint32_t> bitrate;
+        std::optional<uint16_t> port;
+        std::optional<std::string> log_level;
+        std::optional<std::string> raw_args;
 
         // nlohmann doesn't seem to handle optionals how I want so DIY
         static CameraConfigUpdate fromJson(const nlohmann::json& json)
@@ -50,14 +57,39 @@ namespace Models {
 
             return config;
         };
+    };
 
-        std::optional<uint16_t> width;
-        std::optional<uint16_t> height;
-        std::optional<uint8_t> framerate;
-        std::optional<uint32_t> bitrate;
+    struct RtspConfig : Model<RtspConfig> {
+       uint16_t port;
+       uint16_t udp_port;
+       std::string mount_point;
+       std::string pipeline;
+       std::string log_level;
+    };
+
+    struct RtspConfigUpdate {
         std::optional<uint16_t> port;
+        std::optional<uint16_t> udp_port;
+        std::optional<std::string> mount_point;
+        std::optional<std::string> pipeline;
         std::optional<std::string> log_level;
-        std::optional<std::string> raw_args;
+
+        static RtspConfigUpdate fromJson(nlohmann::json json) {
+           RtspConfigUpdate config;
+           if (json.contains("port"))
+               config.port = json.at("port").get<uint16_t>();
+           if (json.contains("udp_port"))
+               config.udp_port = json.at("udp_port").get<uint16_t>();
+           if (json.contains("mount_point"))
+               config.mount_point = json.at("mount_point").get<std::string>();
+           if (json.contains("pipeline"))
+               config.pipeline = json.at("pipeline").get<std::string>();
+           if (json.contains("log_level"))
+               config.log_level = json.at("log_level").get<std::string>();
+
+           return config;
+        };
+
     };
 
 
@@ -71,17 +103,30 @@ namespace Models {
         Status status;
     };
 
+    struct RtspStatus {
+        Status status;
+    };
+
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(CameraConfig,
-    width, height, framerate)
+    width, height, framerate, bitrate, port, log_level, raw_args)
 
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(CameraConfigUpdate,
-    width, height, framerate)
+    width, height, framerate, bitrate, port, log_level, raw_args)
+
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RtspConfig,
+    port, udp_port, mount_point, pipeline, log_level)
+
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RtspConfigUpdate,
+    port, udp_port, mount_point, pipeline, log_level)
 
 NLOHMANN_JSON_SERIALIZE_ENUM(Status, {
     {Status::kStopped, "stopped"},
     {Status::kRunning, "running"}})
 
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(CameraStatus,
+    status)
+
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RtspStatus,
     status)
 
 }; // namespace Models

@@ -4,6 +4,7 @@
 #include <gst/rtsp-server/rtsp-server.h>
 #include <glib.h>
 #include <thread>
+#include <optional>
 
 #include "logger.h"
 #include "rtsp_server_config.h"
@@ -14,7 +15,7 @@ class RTSPServer {
         RTSPServer(const RtspServerConfig& config);
         ~RTSPServer();
 
-        bool start();
+        bool start(const std::optional<RtspServerConfig>& config = std::nullopt);
         void stop();
 
         bool isRunning();
@@ -30,5 +31,5 @@ class RTSPServer {
         std::thread loop_thread_;
 
         Logger log_;
-        const RtspServerConfig config_;
+        RtspServerConfig config_;
 };

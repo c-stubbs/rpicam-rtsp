@@ -89,6 +89,16 @@ void App::stopRpiCamVid()
     rpicam_.stop();
 }
 
+void App::startRtspServer()
+{
+    rtsp_server_.start(config_.rtsp_server_config);
+}
+
+void App::stopRtspServer()
+{
+    rtsp_server_.stop();
+}
+
 void App::signalHandler(int signal)
 {
     if (signal == SIGINT)

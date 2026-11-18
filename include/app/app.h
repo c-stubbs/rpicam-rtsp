@@ -23,13 +23,8 @@ class App {
         void startRpiCamVid();
         void stopRpiCamVid();
 
-        // RTSP Server API
-        /**
-         * RtspServerConfig getRtspServerConfig() const; // get the rtsp server config
-         * void setRtspServerConfig(); // update the rtsp server config (not permanent)
-         * void startRtspServer(); // start the rtsp server
-         * void stopRtspServer(); // stop the rtsp server
-         */
+        void startRtspServer();
+        void stopRtspServer();
     
         // App API
         /**
