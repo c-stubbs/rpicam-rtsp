@@ -89,6 +89,12 @@ bool Api::start()
                     this->onPostRtspRestart(req, res);
                 });
 
+    server.Post("/api/v1/sys/stop",
+                [this](const httplib::Request& req, httplib::Response& res)
+                {
+                    this->onPostSysStop(req, res);
+                });
+
     server_thread_ = std::jthread([this](){
         server.listen("0.0.0.0", 8080);
     });
@@ -117,6 +123,20 @@ void Api::onGetMarco(const httplib::Request& req, httplib::Response& res)
     log_.trace("onGetMarco() called");
 
     res.set_content("Polo!", "text/plain");
+}
+
+void Api::onPostSysStop(const httplib::Request& req, httplib::Response& res)
+{
+    log_.trace("onPostSysStop() called");
+
+    auto task = [this]() {
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+        app_.stop();
+    };
+
+    thread_pool_.queue(task);
+
+    res.status = httplib::StatusCode::Accepted_202;
 }
 
 void Api::onGetCameraConfig(const httplib::Request& req, httplib::Response& res)

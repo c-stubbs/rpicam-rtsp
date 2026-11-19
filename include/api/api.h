@@ -29,6 +29,8 @@ class Api {
         ThreadPool& thread_pool_;
 
         void onGetMarco(const httplib::Request& req, httplib::Response& res);
+
+        void onPostSysStop(const httplib::Request& req, httplib::Response& res);
         
         void onGetCameraConfig(const httplib::Request& req, httplib::Response& res);
         void onPatchCameraConfig(const httplib::Request& req, httplib::Response& res);

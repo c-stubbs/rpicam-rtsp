@@ -23,6 +23,4 @@ class AppConfig {
 
         void validate() const;
 
-    private:
-
 };
