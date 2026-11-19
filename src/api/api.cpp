@@ -180,7 +180,16 @@ void Api::onPatchCameraConfig(const httplib::Request& req, httplib::Response& re
 
     if (camera_config_model.raw_args)
         app_config.rpicam_vid_wrapper_config.raw_args = StringUtils::splitString(*(camera_config_model.raw_args), ' ');
-    
+
+    try {
+        app_config.rpicam_vid_wrapper_config.validate();
+
+    } catch (const std::runtime_error&) {
+        res.status = httplib::StatusCode::BadRequest_400;
+        res.set_content(R"({"error":{"code":"INVALID_CONFIG","message":"Invalid camera configuration."}})", "application/json");
+        return;
+    }
+
     app_.setConfig(app_config);
    
     res.status = httplib::StatusCode::OK_200;
@@ -246,7 +255,55 @@ void Api::onGetRtspConfig(const httplib::Request& req, httplib::Response& res)
 
 void Api::onPatchRtspConfig(const httplib::Request& req, httplib::Response& res)
 {
-    // TODO
+    
+    log_.trace("onPatchRtspConfig() called");
+
+    auto app_config = app_.getConfig();
+    Models::RtspConfigUpdate rtsp_config_model;
+    
+    try {
+        auto json = nlohmann::json::parse(req.body);
+        rtsp_config_model = Models::RtspConfigUpdate::fromJson(json);
+
+        log_.debug("received rtsp configuration: {}", json.dump());
+
+    } catch (nlohmann::json::exception& e)
+    {
+        log_.error("received invalid rtsp configuration: {}", e.what());
+
+        res.status = httplib::StatusCode::BadRequest_400;
+        res.set_content(R"({"error":{"code":"INVALID_JSON","message":"Invalid rtsp configuration."}})", "application/json");
+        return;
+
+    }
+    
+    if (rtsp_config_model.port)
+        app_config.rtsp_server_config.port = *(rtsp_config_model.port);
+
+    if (rtsp_config_model.udp_port)
+        app_config.rtsp_server_config.udp_port = *(rtsp_config_model.udp_port);
+    
+    if (rtsp_config_model.mount_point)
+        app_config.rtsp_server_config.mount_point = *(rtsp_config_model.mount_point);
+
+    if (rtsp_config_model.pipeline)
+        app_config.rtsp_server_config.pipeline = *(rtsp_config_model.pipeline);
+
+    if (rtsp_config_model.log_level)
+        app_config.rtsp_server_config.log_level = *(rtsp_config_model.log_level);
+    
+    try {
+        app_config.rtsp_server_config.validate();
+
+    } catch (const std::runtime_error&) {
+        res.status = httplib::StatusCode::BadRequest_400;
+        res.set_content(R"({"error":{"code":"INVALID_CONFIG","message":"Invalid camera configuration."}})", "application/json");
+        return;
+    }
+
+    app_.setConfig(app_config);
+   
+    res.status = httplib::StatusCode::OK_200;
 }
 
 void Api::onPostRtspStart(const httplib::Request& req, httplib::Response& res)
